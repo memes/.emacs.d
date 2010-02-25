@@ -1,0 +1,226 @@
+# Copyright 1999 Sun Microsystems, Inc. 901 San Antonio Road,
+# Palo Alto, CA  94303, U.S.A.  All rights reserved.
+# 
+# This product or document is protected by copyright and distributed
+# under licenses restricting its use, copying, distribution, and
+# decompilation.  No part of this product or documentation may be
+# reproduced in any form by any means without prior written authorization
+# of Sun and its licensors, if any.  
+# 
+# Third party software, including font technology, is copyrighted and 
+# licensed from Sun suppliers. 
+# 
+# Sun, Sun Microsystems, the Sun Logo, Solaris, Java, JavaServer Pages, Java 
+# Naming and Directory Interface, JDBC, JDK, JavaMail and Enterprise JavaBeans, 
+# are trademarks or registered trademarks of Sun Microsystems, Inc in the U.S. 
+# and other countries.
+# 
+# All SPARC trademarks are used under license and are trademarks
+# or registered trademarks of SPARC International, Inc.
+# in the U.S. and other countries. Products bearing SPARC
+# trademarks are based upon an architecture developed by Sun Microsystems, Inc. 
+# 
+# PostScript is a registered trademark of Adobe Systems, Inc. 
+# 
+# 
+# Federal Acquisitions: Commercial Software - Government Users Subject to 
+# Standard License Terms and Conditions.
+# 
+# 
+# 
+# DOCUMENTATION IS PROVIDED "AS IS" AND ALL EXPRESS OR IMPLIED
+# CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY
+# IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE OR NON-INFRINGEMENT, ARE DISCLAIMED, EXCEPT
+# TO THE EXTENT THAT SUCH DISCLAIMERS ARE HELD TO BE LEGALLY
+# INVALID.
+# 
+# _________________________________________________________________________
+# Copyright 1999 Sun Microsystems, Inc., 
+# 901 San Antonio Road, Palo Alto, CA  94303, Etats-Unis. 
+# Tous droits re'serve's.
+# 
+# 
+# Ce produit ou document est prote'ge' par un copyright et distribue' avec 
+# des licences qui en restreignent l'utilisation, la copie, la distribution,
+# et la de'compilation.  Aucune partie de ce produit ou de sa documentation
+# associe'e ne peut e^tre reproduite sous aucune forme, par quelque moyen 
+# que ce soit, sans l'autorisation pre'alable et e'crite de Sun et de ses 
+# bailleurs de licence, s'il y en a.  
+# 
+# Le logiciel de'tenu par des tiers, et qui comprend la technologie 
+# relative aux polices de caracte`res, est prote'ge' par un copyright 
+# et licencie' par des fournisseurs de Sun.
+# 
+# Sun, Sun Microsystems, le logo Sun, Solaris, Java, JavaServer Pages, Java 
+# Naming and Directory Interface, JDBC, JDK, JavaMail, et Enterprise JavaBeans,  
+# sont des marques de fabrique ou des marques de'pose'es de Sun 
+# Microsystems, Inc. aux Etats-Unis et dans d'autres pays.
+# 
+# Toutes les marques SPARC sont utilise'es sous licence et sont
+# des marques de fabrique ou des marques de'pose'es de SPARC
+# International, Inc. aux Etats-Unis et  dans
+# d'autres pays. Les produits portant les marques SPARC sont
+# base's sur une architecture de'veloppe'e par Sun Microsystems, Inc.  
+# 
+# Postcript est une marque enregistre'e d'Adobe Systems Inc. 
+# 
+# LA DOCUMENTATION EST FOURNIE "EN L'ETAT" ET TOUTES AUTRES CONDITIONS,
+# DECLARATIONS ET GARANTIES EXPRESSES OU TACITES SONT FORMELLEMENT EXCLUES,
+# DANS LA MESURE AUTORISEE PAR LA LOI APPLICABLE, Y COMPRIS NOTAMMENT
+# TOUTE GARANTIE IMPLICITE RELATIVE A LA QUALITE MARCHANDE, A L'APTITUDE
+# A UNE UTILISATION PARTICULIERE OU A L'ABSENCE DE CONTREFACON.
+
+# 
+# This is the DTD defining the JavaServer Pages 1.1 Tag Library
+# descriptor (.tld) (XML) file format/syntax.
+# 
+# A Tag Library is a JAR file containing a valid instance of a Tag Library
+# Descriptor (taglib.tld) file in the META-INF subdirectory, along with the
+# appropriate implementing classes, and other resources required to
+# implement the tags defined therein.
+#
+
+# The taglib tag is the document root, it defines:
+# 
+# tlibversion	the version of the tag library implementation
+# jspversion	the version of JSP the tag library depends upon
+# 
+# shortname	a simple default short name that could be used by
+#		a JSP authoring tool to create names with a mnemonic
+#		value; for example, the it may be used as the prefered
+#		prefix value in taglib directives
+# uri		a uri uniquely identifying this taglib
+# info		a simple string describing the "use" of this taglib,
+#		should be user discernable
+
+default namespace =
+  "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd"
+
+taglib =
+  element taglib {
+    attlist.taglib,
+    tlibversion,
+    jspversion?,
+    shortname,
+    uri?,
+    info?,
+    tag+
+  }
+attlist.taglib &= attribute id { xsd:ID }?
+# Describes this version (number) of the taglibrary (dewey decimal)
+# 
+# #PCDATA ::= [0-9]*{ "."[0-9] }0..3
+tlibversion = element tlibversion { attlist.tlibversion, text }
+# Describes the JSP version (number) this taglibrary requires in
+# order to function (dewey decimal)
+# 
+# The default is 1.1
+# 
+# #PCDATA ::= [0-9]*{ "."[0-9] }0..3
+jspversion = element jspversion { attlist.jspversion, text }
+# Defines a short (default) shortname to be used for tags and
+# variable names used/created by this tag library.  Do not use
+# white space, and do not start with digits or underscore.
+# 
+# #PCDATA ::= NMTOKEN
+shortname = element shortname { attlist.shortname, text }
+# Defines a public URI that uniquely identifies this version of
+# the taglibrary Leave it empty if it does not apply.
+uri = element uri { attlist.uri, text }
+# Defines an arbitrary text string descirbing the tag library
+info = element info { attlist.info, text }
+# The tag defines a unique tag in this tag library, defining:
+# 
+# - the unique tag/element name
+# - the subclass of javax.servlet.jsp.tagext.Tag implementation class
+# - an optional subclass of javax.servlet.jsp.tagext.TagExtraInfo
+# - the body content type (hint)
+# - optional tag-specific information
+# - any attributes
+tag =
+  element tag {
+    attlist.tag,
+    name,
+    tagclass,
+    teiclass?,
+    bodycontent?,
+    info?,
+    \attribute*
+  }
+# Defines the subclass of javax.serlvet.jsp.tagext.Tag that implements
+# the request time semantics for this tag. (required)
+# 
+# #PCDATA ::= fully qualified Java class name
+tagclass = element tagclass { attlist.tagclass, text }
+# Defines the subclass of javax.servlet.jsp.tagext.TagExtraInfo for
+# this tag. (optional)
+# 
+# If this is not given, the class is not consulted at translation time.
+# 
+# #PCDATA ::= fully qualified Java class name
+teiclass = element teiclass { attlist.teiclass, text }
+# Provides a hint as to the content of the body of this tag. Primarily
+# intended for use by page composition tools.
+# 
+# There are currently three values specified:
+# 
+# tagdependent	The body of the tag is interpreted by the tag
+#		implementation itself, and is most likely in a
+#		different "langage", e.g embedded SQL statements.
+# 
+# JSP		The body of the tag contains nested JSP syntax
+# 
+# empty		The body must be empty
+# 
+# The default (if not defined) is JSP
+# 
+# #PCDATA ::=  tagdependent | JSP | empty
+#
+bodycontent = element bodycontent { attlist.bodycontent, text }
+# The attribute tag defines an attribute for the nesting tag
+# 
+# An attribute definition is composed of:
+# 
+# - the attributes name (required)
+# - if the attribute is required or optional (optional)
+# - if the attributes value may be dynamically calculated at runtime
+#   by a scriptlet expression (optional)
+#
+\attribute =
+  element attribute { attlist.attribute, name, required?, rtexprvalue? }
+# Defines the canonical name of a tag or attribute being defined
+# 
+# #PCDATA ::= NMTOKEN
+name = element name { attlist.name, text }
+# Defines if the nesting attribute is required or optional.
+# 
+# #PCDATA ::= true | false | yes | no
+# 
+# If not present then the default is "false", i.e the attribute
+# is optional.
+required = element required { attlist.required, text }
+# Defines if the nesting attribute can have scriptlet expressions as
+# a value, i.e the value of the attribute may be dynamically calculated
+# at request time, as opposed to a static value determined at translation
+# time.
+# 
+# #PCDATA ::= true | false | yes | no
+# 
+# If not present then the default is "false", i.e the attribute
+# has a static value
+rtexprvalue = element rtexprvalue { attlist.rtexprvalue, text }
+attlist.tlibversion &= attribute id { xsd:ID }?
+attlist.jspversion &= attribute id { xsd:ID }?
+attlist.shortname &= attribute id { xsd:ID }?
+attlist.uri &= attribute id { xsd:ID }?
+attlist.info &= attribute id { xsd:ID }?
+attlist.tag &= attribute id { xsd:ID }?
+attlist.tagclass &= attribute id { xsd:ID }?
+attlist.teiclass &= attribute id { xsd:ID }?
+attlist.bodycontent &= attribute id { xsd:ID }?
+attlist.attribute &= attribute id { xsd:ID }?
+attlist.name &= attribute id { xsd:ID }?
+attlist.required &= attribute id { xsd:ID }?
+attlist.rtexprvalue &= attribute id { xsd:ID }?
+start = taglib

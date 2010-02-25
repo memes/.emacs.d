@@ -1,0 +1,8 @@
+  -- Catalogue of catalogues
+  -- $Id: catalog 1 2007-10-18 23:15:33Z memes $
+CATALOG "j2ee/j2ee.cat"
+CATALOG "apache/struts/struts.cat"
+CATALOG "apache/commons/commons.cat"
+CATALOG "ant/ant.cat"
+CATALOG "bea/bea.cat"
+CATALOG "hibernate/hibernate.cat"

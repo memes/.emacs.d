@@ -1,0 +1,5 @@
+  -- Catalog data for Hibernate DTDs
+  -- $Id: hibernate.cat 1 2007-10-18 23:15:33Z memes $ --
+PUBLIC "-//Hibernate/Hibernate generic XML databinding format//EN" hibernate-generic.dtd
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 2.0//EN" hibernate-mapping-2.0.dtd
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" hibernate-mapping-3.0.dtd

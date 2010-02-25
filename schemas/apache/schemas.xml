@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  List of Apache NRELAX NG schemas generated from DTDs using trang
+  $Id: schemas.xml 1 2007-10-18 23:15:33Z memes $
+-->
+<locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
+  <documentElement localName="mbeans-descriptors" uri="commons/mbeans-descriptors.rnc"/>
+  <documentElement localName="form-validation" uri="commons/validator_1_0.rnc"/>
+  <documentElement localName="struts-config" uri="struts/struts-config_1_1.rnc"/>
+  <documentElement localName="tiles-definitions" uri="struts/tiles-config_1_1.rnc"/>
+</locatingRules>

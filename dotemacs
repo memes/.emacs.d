@@ -1,0 +1,41 @@
+;; MEmes emacs setup file, culled from various sources.
+;; $Id: dotemacs 7 2008-06-27 15:21:24Z memes $
+
+;; Add MEmes site lisp to load path
+(add-to-list 'load-path "~/emacs/site")
+
+;; Don't break when loading configuration files
+(defun my-load-config (config-file)
+  "Load a supplied configuration file, don't fuss if unavailable"
+  (if (load config-file t)
+    (message (concat "Loaded " config-file))
+      (message (concat "Unable to load " config-file ", no matter"))))
+
+;; Load common settings
+(my-load-config "00common")
+
+;; Load machine specific settings, if they exist
+(my-load-config (concat "01" my-hostname))
+
+;; Load the configuration settings
+(progn
+  (mapcar
+   (lambda (config-file)
+     (my-load-config config-file))
+   (list
+    "gnuserv-config"
+    "colour-scheme"
+    "mutt-config"
+    "w3m-config"
+    "coding-config"
+    "sql-config"
+    "markup-config"
+    "org-config"
+    ))
+  )
+  
+;; Load common final settings
+(my-load-config "98common")
+
+;; Load machine specific final settings, if they exist
+(my-load-config (concat "99" my-hostname))

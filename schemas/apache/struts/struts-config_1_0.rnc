@@ -1,0 +1,363 @@
+# DTD for the Struts Application Configuration File, Version 1.0
+# 
+# To support validation of your configuration file, include the following
+# DOCTYPE element at the beginning (after the "xml" declaration):
+# 
+# <!DOCTYPE struts-config PUBLIC
+#   "-//Apache Software Foundation//DTD Struts Configuration 1.0//EN"
+#   "http://jakarta.apache.org/struts/dtds/struts-config_1_0.dtd">
+# 
+# $Id: struts-config_1_0.rnc 1 2007-10-18 23:15:33Z memes $
+
+# ========== Defined Types =============================================
+
+# A "BeanName" is the identifier of a JavaBean, such as a form bean,
+# and also serves as the name of the corresponding scripting variable
+# and the name of the JSP attribute under which the bean is accessed.
+# Therefore, it must conform to the rules for a Java identifier.
+
+namespace a = "http://relaxng.org/ns/compatibility/annotations/1.0"
+
+BeanName = string
+# A "Boolean" is the string representation of a boolean (true or false)
+# variable.
+Boolean = "true" | "false" | "yes" | "no"
+# A "ClassName" is the fully qualified name of a Java class that is
+# instantiated to provide the functionality of the enclosing element.
+ClassName = string
+# An "Integer" is a character string consisting solely of numeric digits,
+# optionally preceeded by a minus sign, that can be converted to a
+# 32-bit integer.
+Integer = string
+# A "Location" is a relative path, delimited by "/" characters, that
+# defines the location of a resource relative to the location of the
+# Struts configuration file itself.
+Location = text
+# A "PropName" is the name of a JavaBeans property, and must begin with
+# a lower case letter and contain only characters that are legal in a
+# Java identifier.
+PropName = string
+# A "RequestPath" is a context-relative URI path, beginning with a slash,
+# that identifies a mapped resource (such as a JSP page or a servlet)
+# within this web application.
+RequestPath = string
+# The name of a JSP bean scope within which such a form bean may be
+# accessed.
+RequestScope = "request" | "session"
+# ========== Top Level Elements ========================================
+
+# The "struts-config" element is the root of the configuration file
+# hierarchy, and contains nested elements for all of the other
+# configuration settings.
+struts-config =
+  element struts-config {
+    attlist.struts-config,
+    data-sources?,
+    form-beans?,
+    global-forwards?,
+    action-mappings?
+  }
+attlist.struts-config &= attribute id { xsd:ID }?
+# The "data-sources" element describes a set of JDBC 2.0 Standard Extension
+# data source objects which will be configured according to the nested
+# "data-source" elements found inside.
+data-sources =
+  element data-sources { attlist.data-sources, data-source* }
+attlist.data-sources &= attribute id { xsd:ID }?
+# The "data-source" element describes a JDBC 2.0 Standard Extension data
+# source object (that implements javax.sql.DataSource) which will be
+# configured according to the properties and nested elements found here,
+# and made available as a servlet context attribute (i.e. application
+# scope bean).  The following attributes are required:
+# 
+# key             Servlet context attribute key under which this data
+#                 source will be stored.  Default is the value specified
+#                 by string constant Action.DATA_SOURCE_KEY.
+# 
+# type            Fully qualified Java class name of the implementation
+#                 class (must implement javax.sql.DataSource).  Default
+#                 value is 'org.apache.struts.util.GenericDataSource'.
+# 
+# NOTE:  The following attributes are defined by the default data source
+# implementation, and only take effect for that class or subclasses of
+# that class.
+# 
+# WARNING:  The use of these attributes is deprecated.  You should use
+# nested &lt;set-property&gt; elements to configure *all* properties of
+# your data source implementation.
+# 
+# autoCommit      The default auto-commit state for newly created
+#                 connections.
+# 
+# description     The description of this data source.
+# 
+# driverClass     The Java class name of the JDBC driver to be used.
+#                 [REQUIRED]
+# 
+# loginTimeout    The maximum number of seconds to wait for a connection
+#                 to be created or returned.  Default is driver dependent.
+# 
+# maxCount        The maximum number of connections to be created.
+# 
+# minCount        The minimum number of connections to be created.
+# 
+# password        The database password to use when connecting. [REQUIRED]
+# 
+# readOnly        The default read-only state for newly created
+#                 connections.
+# 
+# url             The JDBC URL to use when connecting. [REQUIRED]
+# 
+# user            The database username to use when connecting. [REQUIRED]
+#
+data-source = element data-source { attlist.data-source, set-property* }
+attlist.data-source &= attribute id { xsd:ID }?
+attlist.data-source &= attribute key { BeanName }?
+attlist.data-source &= attribute type { ClassName }?
+# All of the following attributes are deprecated.  Use a nested
+
+# set-property element to configure data source properties.
+attlist.data-source &= attribute autoCommit { Boolean }?
+attlist.data-source &= attribute description { text }?
+attlist.data-source &= attribute driverClass { ClassName }?
+attlist.data-source &= attribute loginTimeout { Integer }?
+attlist.data-source &= attribute maxCount { Integer }?
+attlist.data-source &= attribute minCount { Integer }?
+attlist.data-source &= attribute password { text }?
+attlist.data-source &= attribute readOnly { Boolean }?
+attlist.data-source &= attribute url { text }?
+attlist.data-source &= attribute user { text }?
+# The "form-beans" element is the root of the set of form bean descriptors
+# for this application.  The following attributes are defined:
+# 
+# type            Fully qualified Java class name of the implementation
+#                 class used for ActionFormBean objects.  DEPRECATED.
+# 
+#                 WARNING:  For Struts 1.0, this value is ignored.  You
+#                 can set the default implementation class name with the
+#                 "formBean" initialization parameter to the Struts
+#                 controller servlet.
+form-beans = element form-beans { attlist.form-beans, form-bean* }
+attlist.form-beans &= attribute id { xsd:ID }?
+attlist.form-beans &=
+  [ a:defaultValue = "org.apache.struts.action.ActionFormBean" ]
+  attribute type { ClassName }?
+# The "form-bean" element describes a particular form bean, which is a
+# JavaBean that implements the org.apache.struts.action.ActionForm
+# class.  The following attributes are defined:
+# 
+# className       Fully qualified Java class name of the ActionFormBean
+#                 implementation class to use.  Defaults to the value
+#                 configured as the "formBean" initialization parameter
+#                 to the Struts controller servlet.
+# 
+# name            Unique identifier of this bean, used to reference it
+#                 in corresponding action mappings.
+# 
+# type            Fully qualified Java class name of the implementation
+#                 class to be used or generated
+form-bean =
+  element form-bean {
+    attlist.form-bean, icon?, display-name?, description?, set-property*
+  }
+attlist.form-bean &= attribute id { xsd:ID }?
+attlist.form-bean &= attribute className { ClassName }?
+attlist.form-bean &= attribute name { BeanName }
+attlist.form-bean &= attribute type { ClassName }
+# The "global-forwards" element configures the global mappings of logical
+# names (used within the application) to mappable resources (identified
+# by context-relative URI paths).  A global "forward" with a particular name
+# can be locally overridden by defining a "forward" of the same name within
+# an "action" element.  The following attribute are defined:
+# 
+# type            Fully qualified Java class name of the implementation
+#                 class used for ActionForward objects.  DEPRECATED.
+# 
+#                 WARNING:  For Struts 1.0, this value is ignored.  You
+#                 can set the default implementation class name with the
+#                 "forward" initialization parameter to the Struts
+#                 controller servlet.
+global-forwards =
+  element global-forwards { attlist.global-forwards, forward* }
+attlist.global-forwards &= attribute id { xsd:ID }?
+attlist.global-forwards &=
+  [ a:defaultValue = "org.apache.struts.action.ActionForward" ]
+  attribute type { ClassName }?
+# The "forward" element describes a mapping of a logical name (used within
+# the application) to a mappable resource identified by a context-relative
+# URI path.  The following attributes are defined:
+# 
+# className       Fully qualified Java class name of the ActionForward
+#                 implementation class to use.  Defaults to the value
+#                 configured as the "forward" initialization parameter
+#                 to the Struts controller servlet.
+# 
+# name            Unique identifier of this forward, used to reference it
+#                 in application action classes.
+# 
+# path            The context-relative path of the mapped resource.
+# 
+# redirect        Set to "true" if sendRedirect() should be used to forward
+#                 to this resource, or "false" in order to use
+#                 RequestDispatcher.forward() instead.
+forward =
+  element forward {
+    attlist.forward, icon?, display-name?, description?, set-property*
+  }
+attlist.forward &= attribute id { xsd:ID }?
+attlist.forward &= attribute className { ClassName }?
+attlist.forward &= attribute name { text }
+attlist.forward &= attribute path { RequestPath }
+attlist.forward &= attribute redirect { Boolean }?
+# The "action-mappings" element configures the mappings from submitted
+# request paths to the corresponding Action classes that should be
+# used to process these requests.  The following attributes are
+# defined:
+# 
+# type           Fully qualified Java class name of the ActionMapping
+#                implementation class to be used.  DEPRECATED.
+# 
+#                 WARNING:  For Struts 1.0, this value is ignored.  You
+#                 can set the default implementation class name with the
+#                 "mapping" initialization parameter to the Struts
+#                 controller servlet.
+action-mappings =
+  element action-mappings { attlist.action-mappings, action* }
+attlist.action-mappings &= attribute id { xsd:ID }?
+attlist.action-mappings &=
+  [ a:defaultValue = "org.apache.struts.action.ActionMapping" ]
+  attribute type { ClassName }?
+# The "action" element describes a mapping from a request paths to the
+# corresponding Action classes that should be used to process these
+# requests.  The following attributes are defined:
+# 
+# attribute       Name of the request-scope or session-scope attribute
+#                 under which our form bean is accessed, if it is other
+#                 than the bean's specified "name".  Optional if
+#                 "name" is specified, else not allowed.
+# 
+# className       Fully qualified Java class name of the ActionMapping
+#                 implementation class to use.  Defaults to the value
+#                 configured as the "mapping" initialization parameter
+#                 to the Struts controller servlet.
+# 
+# forward         Context-relative path of the servlet or JSP resource that
+#                 will process this request, instead of instantiating and
+#                 calling the Action class specified by "type".  Exactly one
+#                 of "forward", "include", or "type" must be specified.
+# 
+# include         Context-relative path of the servlet or JSP resource that
+#                 will process this request, instead of instantiating and
+#                 calling the Action class specified by "type".  Exactly one
+#                 of "forward", "include", or "type" must be specified.
+# 
+# input           Context-relative path of the input form to which control
+#                 should be returned if a validation error is encountered.
+#                 Required if "name" is specified and the input bean
+#                 returns validation errors.  Optional if "name" is
+#                 specified and the input bean does not return validation
+#                 errors.  Not allowed if "name" is not specified.
+# 
+# name            Name of the form bean, if any, that is associated
+#                 with this action.
+# 
+# path            The context-relative path of the submitted request,
+#                 starting with a "/" character, and without the
+#                 filename extension if extension mapping is used.
+# 
+# parameter       General purpose configuration parameter that can be used
+#                 to pass extra information to the Action selected by this
+#                 mapping.
+# 
+# prefix          Prefix used to match request parameter names to form bean
+#                 property names, if any.  Optional if "name" is specified,
+#                 else not allowed.
+# 
+# scope           Identifier of the scope ("request" or "session") within
+#                 which our form bean is accessed, if any.  Optional if
+#                 "name" is specified, else not allowed.
+# 
+# suffix          Suffix used to match request parameter names to form bean
+#                 property names, if any.  Optional if "name" is specified,
+#                 else not allowed.
+# 
+# type            Fully qualified Java class name of the Action class
+#                 (implements org.apache.struts.action.Action) to be
+#                 used to process requests for this mapping if the "forward"
+#                 or "include" attribute is not included.  Exactly one
+#                 of "forward", "include", or "type" must be specified.
+# 
+# unknown         Set to "true" if this action should be configured as the
+#                 default for this application, to handle all requests
+#                 not handled by another action.  Only one action can be
+#                 defined as a default within a single application.
+# 
+# validate        Set to "true" if the validate() method of the form bean
+#                 should be called prior to calling this action, or set to
+#                 "false" if you do not want validation performed.
+action =
+  element action {
+    attlist.action,
+    icon?,
+    display-name?,
+    description?,
+    set-property*,
+    forward*
+  }
+attlist.action &= attribute id { xsd:ID }?
+attlist.action &= attribute attribute { BeanName }?
+attlist.action &= attribute className { ClassName }?
+attlist.action &= attribute forward { RequestPath }?
+attlist.action &= attribute include { RequestPath }?
+attlist.action &= attribute input { RequestPath }?
+attlist.action &= attribute name { BeanName }?
+attlist.action &= attribute parameter { text }?
+attlist.action &= attribute path { RequestPath }
+attlist.action &= attribute prefix { text }?
+attlist.action &= attribute scope { RequestScope }?
+attlist.action &= attribute suffix { text }?
+attlist.action &= attribute type { ClassName }?
+attlist.action &= attribute unknown { Boolean }?
+attlist.action &= attribute validate { Boolean }?
+# The "set-property" element specifies the name and value of an additional
+# JavaBeans configuration property whose setter method will be called
+# on the object that represents our surrounding element.  This is especially
+# useful when an extended implementation class (with additional properties)
+# is configured on the <global-forwards> or <action-mappings> elements.
+# The following attributes are defined:
+# 
+# property        Name of the JavaBeans property whose setter method
+#                 will be called.
+# 
+# value           String representation of the value to which this
+#                 property will be set, after suitable type conversion
+set-property = element set-property { attlist.set-property, empty }
+attlist.set-property &= attribute id { xsd:ID }?
+attlist.set-property &= attribute property { PropName }
+attlist.set-property &= attribute value { text }
+# ========== Subordinate Elements ======================================
+
+# The "description" element contains descriptive (paragraph length) text
+# about the surrounding element, suitable for use in GUI tools.
+description = element description { attlist.description, text }
+attlist.description &= attribute id { xsd:ID }?
+# The "display-name" element contains a short (one line) description of
+# the surrounding element, suitable for use in GUI tools.
+display-name = element display-name { attlist.display-name, text }
+attlist.display-name &= attribute id { xsd:ID }?
+# The "icon" element contains a small-icon and large-icon element which
+# specify the location, relative to the Struts configuration file, for small
+# and large images used to represent the surrounding element in GUI tools.
+icon = element icon { attlist.icon, small-icon?, large-icon? }
+attlist.icon &= attribute id { xsd:ID }?
+# The "large-icon" element specifies the location, relative to the Struts
+# configuration file, of a resource containing a large (32x32 pixel)
+# icon image.
+large-icon = element large-icon { attlist.large-icon, Location }
+attlist.large-icon &= attribute id { xsd:ID }?
+# The "small-icon" element specifies the location, relative to the Struts
+# configuration file, of a resource containing a small (16x16 pixel)
+# icon image.
+small-icon = element small-icon { attlist.small-icon, Location }
+attlist.small-icon &= attribute id { xsd:ID }?
+start = struts-config

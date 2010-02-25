@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  RELAX NG schemas for Ant, generated from DTD using trang
+  $Id: schemas.xml 1 2007-10-18 23:15:33Z memes $
+-->
+<locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
+  <documentElement localName="project" uri="ant-1.6.rnc"/>
+</locatingRules>

@@ -1,0 +1,506 @@
+# XML DTD for WebLogic Server v8.1 specific Resource Adapter deployment
+# descriptor. This DTD is intended to be accompanied with the J2EE Connector
+# Architecture v1.0 Resource Adapter deployment descriptor (ra.xml).
+# 
+# Overview of changes since weblogic700-ra.dtd:
+#     * Added highest-num-waiters.
+#     * Added highest-num-unavailable.
+#     * Added connection-creation-retry-frequency-seconds.
+#     * Added connection-reserve-timeout-seconds.
+#     * Added test-frequency-seconds.
+#     * Added shrink-frequency-seconds.
+#     * Added inactive-connection-timeout-seconds.
+#     * Added match-connections-supported.
+#     * Deprecated connection-maxidle-time. Replaced by
+#       inactive-connection-timeout-seconds.
+#     * Deprecated shrink-period-minutes. Replaced by shrink-frequency-seconds.
+#     * Added res-auth.
+# 
+# Copyright (c) 2002 by BEA Systems, Inc. All Rights Reserved.
+
+# This DTD defines the Weblogic specific deployment information for defining
+# a deployable Resource Adapter Connection Factory.  It provides for complete
+# specification of all configurable Connection Factory parameters including
+# Connection Pool parameters, Security parameters for Resource Principal Mapping
+# and the ability to define values for configuration parameters which exist in
+# the ra.xml deployment descriptor.
+
+# The weblogic-connection-factory-dd element is the root element of the
+# Weblogic specific deployment descriptor for the deployed resource adapter.
+
+weblogic-connection-factory-dd =
+  element weblogic-connection-factory-dd {
+    attlist.weblogic-connection-factory-dd,
+    connection-factory-name,
+    description?,
+    jndi-name,
+    ra-link-ref?,
+    native-libdir?,
+    pool-params?,
+    (logging-enabled, log-filename)?,
+    map-config-property*,
+    security-principal-map?,
+    use-connection-proxies?,
+    res-auth?
+  }
+attlist.weblogic-connection-factory-dd &= empty
+# The connection-factory-name element defines that logical name that will be
+# associated with this specific deployment of the Resource Adapter and its
+# corresponding Connection Factory.
+# 
+# The value of connection-factory-name can be used in other deployed Resource
+# Adapters via the ra-link-ref element.  This will allow multiple deployed
+# Connection Factories to utilize a common deployed Resource Adapter, as well
+# as share configuration specifications.
+# 
+# This is a required element.
+connection-factory-name =
+  element connection-factory-name {
+    attlist.connection-factory-name, text
+  }
+attlist.connection-factory-name &= empty
+# The description element is used to provide text describing the parent element.
+# The description element should include any information that the deployer wants
+# to describe about the deployed Connection Factory.
+# 
+# This is an optional element.
+description = element description { attlist.description, text }
+attlist.description &= empty
+# The jndi-name element defines the name that will be used to bind the Connection
+# Factory Object into the Weblogic JNDI Namespace.  Client EJBs and Servlets will
+# use this same JNDI in their defined Reference Desciptor elements of the weblogic
+# specific deployment descriptors.
+# 
+# This is a required element.
+jndi-name = element jndi-name { attlist.jndi-name, text }
+attlist.jndi-name &= empty
+# The ra-link-ref element allows for the logical association of multiple deployed
+# Connection Factories with a single deployed Resource Adapter.  The specification
+# of the optional ra-link-ref element with a value identifying a separately
+# deployed Connection Factory will result in this newly deployed Connection
+# Factory sharing the Resource Adapter which had been deployed with the
+# referenced Connection Factory.
+# 
+# In addition, any values defined in the referred Connection Factories
+# deployment will be inherited by this newly deployed Connection Factory unless
+# specified.
+# 
+# This is an optional element.
+ra-link-ref = element ra-link-ref { attlist.ra-link-ref, text }
+attlist.ra-link-ref &= empty
+# The native-libdir element identifies the directory location to be used for all
+# native libraries present in this resource adapter deployment.  As part of
+# deployment processing, all encountered native libraries will be copied to the
+# location specified.
+# 
+# It is the responsibility of the Administrator to perform the necessary
+# platform actions such that these libraries will be found during Weblogic
+# Server runtime.
+# 
+# This is a required element IF native libraries are present.
+native-libdir = element native-libdir { attlist.native-libdir, text }
+attlist.native-libdir &= empty
+# The pool-params element is the root element for providing Connection Pool
+# specific parameters for this Connection Factory.
+# 
+# Weblogic will use these specifications in controlling the behavior of the
+# maintained pool of Managed Connections.
+# 
+# This is an optional element.  Failure to specify this element or any of its
+# specific element items will result in default values being assigned.  Refer to
+# the description of each individual element for the designated default value.
+pool-params =
+  element pool-params {
+    attlist.pool-params,
+    initial-capacity?,
+    max-capacity?,
+    capacity-increment?,
+    shrinking-enabled?,
+    shrink-period-minutes?,
+    connection-cleanup-frequency?,
+    connection-duration-time?,
+    connection-maxidle-time?,
+    connection-profiling-enabled?,
+    shrink-frequency-seconds?,
+    inactive-connection-timeout-seconds?,
+    highest-num-waiters?,
+    highest-num-unavailable?,
+    connection-creation-retry-frequency-seconds?,
+    connection-reserve-timeout-seconds?,
+    test-frequency-seconds?,
+    match-connections-supported?,
+    use-first-available-connection?
+  }
+attlist.pool-params &= empty
+# The initial-capacity element identifies the initial number of managed connections
+# which the Weblogic Server will attempt to obtain during deployment.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Default Value:  1
+initial-capacity =
+  element initial-capacity { attlist.initial-capacity, text }
+attlist.initial-capacity &= empty
+# The max-capacity element identifies the maximum number of managed connections
+# which the Weblogic Server will allow.  Requests for newly allocated managed
+# connections beyond this limit will result in a ResourceAllocationException being
+# returned to the caller.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Default Value:  10
+max-capacity = element max-capacity { attlist.max-capacity, text }
+attlist.max-capacity &= empty
+# The capacity-increment element identifies the number of additional managed
+# connections which the Weblogic Server will attempt to obtain during resizing
+# of the maintained connection pool.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Default Value:  1
+capacity-increment =
+  element capacity-increment { attlist.capacity-increment, text }
+attlist.capacity-increment &= empty
+# The shrinking-enabled element indicates whether or not the Connection Pool
+# should have unused Managed Connections reclaimed as a means to control system
+# resources.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Value Range:  true|false
+# 
+# Default Value:  true
+shrinking-enabled =
+  element shrinking-enabled { attlist.shrinking-enabled, text }
+attlist.shrinking-enabled &= empty
+# The shrink-period-minutes element identifies the amount of time the Connection
+# Pool Management will wait between attempts to reclaim unused Managed
+# Connections.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Default Value:  15
+shrink-period-minutes =
+  element shrink-period-minutes { attlist.shrink-period-minutes, text }
+attlist.shrink-period-minutes &= empty
+# The connection-cleanup-frequency element identifies the amount of time (in
+# seconds) the Connection Pool Management will wait between attempts to destroy
+# Connection handles which have exceeded their usage duration. This element,
+# used in conjunction with connection-duration-time, prevents connection leaks
+# when an Application may have not closed a connection after completing usage.
+# 
+# This element is deprecated. This is being replaced with connection-maxidle-time.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Default Value:  -1
+connection-cleanup-frequency =
+  element connection-cleanup-frequency {
+    attlist.connection-cleanup-frequency, text
+  }
+attlist.connection-cleanup-frequency &= empty
+# The connection-duration-time element identifies the amount of time (in seconds)
+# a Connection handle can be active. This element, used in conjunction with
+# connection-cleanup-frequency, prevents leaks when an Application may have not
+# closed a connection after completing usage.
+# 
+# This element is deprecated. This is being replaced with connection-maxidle-time.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Default Value:  -1
+connection-duration-time =
+  element connection-duration-time {
+    attlist.connection-duration-time, text
+  }
+attlist.connection-duration-time &= empty
+# The connection-maxidle-time element identifies the amount of time (in seconds)
+# a Connection handle can remain idle. This element prevents leaks when an
+# Application may have not closed a connection after completing usage.  Idle
+# connections will only be terminated in the case where the connection pool
+# becomes full, and a new connection request is about to fail because of this.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Default Value:  0
+connection-maxidle-time =
+  element connection-maxidle-time {
+    attlist.connection-maxidle-time, text
+  }
+attlist.connection-maxidle-time &= empty
+# The connection-profiling-enabled element indicates whether or not the
+# Connection Pool should store the call stacks of where each Connection is
+# allocated.  If enabled this information can be viewed on active Connections
+# through the console.  Also, the stacks for Leaked and Idle connections will be
+# available if this is enabled and can help debug components that fail to close
+# connections.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Value Range:  true|false
+# 
+# Default Value:  false
+connection-profiling-enabled =
+  element connection-profiling-enabled {
+    attlist.connection-profiling-enabled, text
+  }
+attlist.connection-profiling-enabled &= empty
+# The shrink-frequency-seconds element identifies the amount of time (in seconds)
+# the Connection Pool Management will wait between attempts to reclaim unused
+# Managed Connections.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Default Value:  900 seconds
+shrink-frequency-seconds =
+  element shrink-frequency-seconds {
+    attlist.shrink-frequency-seconds, text
+  }
+attlist.shrink-frequency-seconds &= empty
+# The inactive-connection-timeout-seconds element identifies the amount of time
+# (in seconds) a Connection handle can remain inactive. This element prevents
+# leaks when an Application may have not closed a connection after completing
+# usage.  Inactive connections will be terminated as soon as they are detected.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Default Value:  0
+inactive-connection-timeout-seconds =
+  element inactive-connection-timeout-seconds {
+    attlist.inactive-connection-timeout-seconds, text
+  }
+attlist.inactive-connection-timeout-seconds &= empty
+# The highest-num-waiters element is the maximum number of waiters that can
+# concurrently block waiting to reserve a connection from the pool.
+# 
+# This is an optional element.
+# 
+# Default Value:  0
+highest-num-waiters =
+  element highest-num-waiters { attlist.highest-num-waiters, text }
+attlist.highest-num-waiters &= empty
+# The highest-num-unavailable element is the maximum number of physical
+# connections (Managed Connections) in the pool that can be made unavailable
+# (to the application) for purposes like refreshing the connection etc. Note
+# that in cases likes the backend system being unavailable, this specified value
+# could be exceeded due to factors outside the pools control.
+# 
+# This is an optional element.
+# 
+# Default Value:  0
+highest-num-unavailable =
+  element highest-num-unavailable {
+    attlist.highest-num-unavailable, text
+  }
+attlist.highest-num-unavailable &= empty
+# The connection-creation-retry-frequency-seconds element is the periodicity of
+# retry attempts by the pool to establish connections.
+# 
+# This is an optional element.
+# 
+# Default Value:  0
+connection-creation-retry-frequency-seconds =
+  element connection-creation-retry-frequency-seconds {
+    attlist.connection-creation-retry-frequency-seconds, text
+  }
+attlist.connection-creation-retry-frequency-seconds &= empty
+# The connection-reserve-timeout-seconds element is the number of seconds after
+# which the call to reserve a connection from the pool will timeout.
+# 
+# This is an optional element.
+# 
+# Default Value:  -1
+connection-reserve-timeout-seconds =
+  element connection-reserve-timeout-seconds {
+    attlist.connection-reserve-timeout-seconds, text
+  }
+attlist.connection-reserve-timeout-seconds &= empty
+# The test-frequency-seconds element is the periodicity at which connections in
+# the pool are tested.
+# 
+# This is an optional element.
+# 
+# Default Value:  0
+test-frequency-seconds =
+  element test-frequency-seconds {
+    attlist.test-frequency-seconds, text
+  }
+attlist.test-frequency-seconds &= empty
+# The match-connections-supported element indicates whether or not the resource
+# adapter supports the ManagedConnectionFactory.matchManagedConnections() method.
+# If the resource adapter does not support this method (i.e. always return null
+# for this method) then WebLogic Server will bypass this method call during a
+# connection request.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default
+# value.
+# 
+# Value Range:    true|false
+# 
+# Default Value:  true
+match-connections-supported =
+  element match-connections-supported {
+    attlist.match-connections-supported, text
+  }
+attlist.match-connections-supported &= empty
+# The use-first-available-connection elemente indicates that all connections 
+# in the pool may be used to satisfy any connection request, i.e. they all 
+# share the same connection properties and security attributes.  This 
+# eliminates the need for the server to call matchConnections on the Resource 
+# Adapter and makes for more efficient pool management for applications where 
+# this is appropriate.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default
+# value.
+# 
+# Value Range:    true|false
+# 
+# Default Value:  false
+use-first-available-connection =
+  element use-first-available-connection {
+    attlist.use-first-available-connection, text
+  }
+attlist.use-first-available-connection &= empty
+# The logging-enabled element indicates whether or not the log writer
+# is set for either the ManagedConnectionFactory or ManagedConnection. If this
+# element is set to true, output generated from either the
+# ManagedConnectionFactory or ManagedConnection will be sent to the file
+# specified by the log-filename element.
+# 
+# This is an optional element.
+# 
+# Failure to specify this value will result in Weblogic using its defined default value.
+# 
+# Value Range:  true|false
+# 
+# Default Value:  false
+logging-enabled =
+  element logging-enabled { attlist.logging-enabled, text }
+attlist.logging-enabled &= empty
+# The log-filename element specifies the name of the log file which output
+# generated from either the ManagedConnectionFactory or a ManagedConnection
+# are sent.
+# 
+# The full address of the filename is required.
+# 
+# This is an optional element.
+log-filename = element log-filename { attlist.log-filename, text }
+attlist.log-filename &= empty
+# Each map-config-property element identifies a configuration property name and
+# value that corresponds to an ra.xml config-entry element with the corresponding
+# config-property-name.
+# 
+# At deployment time, all values present in a map-config-property specification
+# will be set on the ManagedConnectionFactory.
+# 
+# Values specified via a map-config-property will supersede any default value
+# that may have been specified in the corresponding ra.xml config-entry element.
+# 
+# This is an optional element.
+map-config-property =
+  element map-config-property {
+    attlist.map-config-property,
+    map-config-property-name,
+    map-config-property-value
+  }
+attlist.map-config-property &= empty
+map-config-property-name =
+  element map-config-property-name {
+    attlist.map-config-property-name, text
+  }
+attlist.map-config-property-name &= empty
+map-config-property-value =
+  element map-config-property-value {
+    attlist.map-config-property-value, text
+  }
+attlist.map-config-property-value &= empty
+# Each security-principal-map element provides a mechanism to define appropriate
+# Resource Principal values for Resource Adapter/EIS authorization processing,
+# based upon the known Weblogic Runtime Initiating Principal.
+# 
+# This map allows for the specification of a defined set of Initiating Principals
+# and the corresponding Resource Principal's Username and Password that should be
+# used when allocating Managed Connections and Connection Handles.
+# 
+# A default Resource Principal can be defined for the Connection Factory via the
+# map.  By specifying an initiating-principal value of '*' and a corresponding
+# resource-principal, the defined resource-principal will be utilized whenever the
+# current identity is NOT matched elsewhere in the map.
+# 
+# This element is deprecated. Refer to the Programming the WebLogic J2EE Connector
+# Architecture guide for more details.
+# 
+# This is an optional element, however, it must be specified in some form if
+# Container Managed Sign-on is supported by the Resource Adapter and used by ANY
+# client.
+# 
+# In addition, the deployment-time population of the Connection Pool with Managed
+# Connections will be attempted using the defined 'default' resource principal if
+# one is specified.
+security-principal-map =
+  element security-principal-map {
+    attlist.security-principal-map, map-entry*
+  }
+attlist.security-principal-map &= empty
+map-entry =
+  element map-entry {
+    attlist.map-entry, initiating-principal+, resource-principal
+  }
+attlist.map-entry &= empty
+initiating-principal =
+  element initiating-principal { attlist.initiating-principal, text }
+attlist.initiating-principal &= empty
+resource-principal =
+  element resource-principal {
+    attlist.resource-principal, resource-username, resource-password
+  }
+attlist.resource-principal &= empty
+resource-username =
+  element resource-username { attlist.resource-username, text }
+attlist.resource-username &= empty
+resource-password =
+  element resource-password { attlist.resource-password, text }
+attlist.resource-password &= empty
+# #DOCUMENTATION:If use-connection-proxies is set to true, the connection proxy viability test will not be performed and connection proxies will be generated.
+# If use-connection-proxies is set to false, the connection proxy viability test will not be performed and connection proxies will NOT be generated.
+# If use-connection-proxies is unspecified, the connection proxy viability test will be performed and its outcome will determine whether connection proxies will be generated or not.
+use-connection-proxies =
+  element use-connection-proxies {
+    attlist.use-connection-proxies, text
+  }
+attlist.use-connection-proxies &= empty
+# The res-auth element overrides the res-auth value specified in the application component
+# (EJB or Web App) that accesses this resource adapter.
+# 
+# This is an optional element.
+# 
+# Value Range:  Container|Application
+res-auth = element res-auth { attlist.res-auth, text }
+attlist.res-auth &= empty
+start = weblogic-connection-factory-dd

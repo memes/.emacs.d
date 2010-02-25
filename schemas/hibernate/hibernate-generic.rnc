@@ -1,0 +1,115 @@
+# Hibernate generic XML databinding format.
+# 
+# <!DOCTYPE hibernate-generic PUBLIC 
+#	"-//Hibernate/Hibernate generic XML databinding format//EN"
+#	"http://hibernate.sourceforge.net/hibernate-generic.dtd">
+# 
+# An instance of this XML document contains an XML representation of an
+# arbitrary number of related persistent or transient entity instances.
+#
+
+# The document root.
+
+hibernate-generic =
+  element hibernate-generic { attlist.hibernate-generic, object* }
+attlist.hibernate-generic &= attribute datetime { text }?
+# An instance of an entity class.
+object =
+  element object {
+    attlist.object, id?, (property | component | collection | array)*
+  }
+attlist.object &= attribute class { text }
+attlist.object &= attribute package { text }
+attlist.object &=
+  attribute proxy {
+    "initialized" | "uninitialized" | "now-initialized"
+  }?
+# The id property of the entity.
+id = element id { attlist.id, any }
+attlist.id &= attribute type { text }?
+attlist.id &= attribute name { text }?
+# The composite id property of the entity.
+composite-id = element composite-id { attlist.composite-id, property* }
+attlist.composite-id &= empty
+# A property of an entity or component.
+property = element property { attlist.property, any }
+attlist.property &= attribute name { text }
+attlist.property &= attribute type { text }?
+attlist.property &= attribute class { text }?
+attlist.property &= attribute package { text }?
+attlist.property &=
+  attribute proxy {
+    "initialized" | "uninitialized" | "now-initialized"
+  }?
+# A component.
+component =
+  element component {
+    attlist.component, (property | component | collection | array)*
+  }
+attlist.component &= attribute class { text }?
+attlist.component &= attribute name { text }
+# An array.
+array =
+  element array {
+    attlist.array,
+    (\element | subcollection | composite-element | array)*
+  }
+attlist.array &= attribute element-type { text }?
+attlist.array &= attribute index-type { text }?
+attlist.array &= attribute role { text }?
+attlist.array &= attribute name { text }
+# A collection.
+collection =
+  element collection {
+    attlist.collection,
+    (\element | subcollection | composite-element | array)*
+  }
+attlist.collection &= attribute class { text }?
+attlist.collection &= attribute element-type { text }?
+attlist.collection &= attribute index-type { text }?
+attlist.collection &= attribute role { text }?
+attlist.collection &= attribute name { text }
+attlist.collection &=
+  attribute lazy {
+    "initialized" | "uninitialized" | "now-initialized"
+  }?
+# A collection element.
+\element = element element { attlist.element, text }
+attlist.element &= attribute index { text }?
+attlist.element &= attribute class { text }?
+attlist.element &= attribute package { text }?
+attlist.element &=
+  attribute proxy {
+    "initialized" | "uninitialized" | "now-initialized"
+  }?
+attlist.element &= attribute uid { text }?
+# A collection inside another collection.
+subcollection =
+  element subcollection {
+    attlist.subcollection,
+    (\element | subcollection | composite-element | array)*
+  }
+attlist.subcollection &= attribute class { text }?
+attlist.subcollection &= attribute element-type { text }?
+attlist.subcollection &= attribute index-type { text }?
+attlist.subcollection &= attribute role { text }?
+attlist.subcollection &= attribute index { text }?
+attlist.subcollection &=
+  attribute lazy {
+    "initialized" | "uninitialized" | "now-initialized"
+  }?
+# A component inside a collection.
+composite-element =
+  element composite-element {
+    attlist.composite-element,
+    (property | component | collection | array)*
+  }
+attlist.composite-element &= attribute class { text }?
+attlist.composite-element &= attribute index { text }?
+start = hibernate-generic | composite-id
+any =
+  (element * {
+     attribute * { text }*,
+     any
+   }
+   | text)*

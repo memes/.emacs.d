@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Include rules for my local schemas
+  $Id: schemas.xml 1 2007-10-18 23:15:33Z memes $
+-->
+<locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
+  <include rules="ant/schemas.xml"/>
+  <include rules="apache/schemas.xml"/>
+  <include rules="bea/schemas.xml"/>
+  <include rules="docbook/schemas.xml"/>
+  <include rules="j2ee/schemas.xml"/>
+  <include rules="hibernate/schemas.xml"/>
+</locatingRules>
