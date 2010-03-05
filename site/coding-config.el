@@ -6,14 +6,14 @@
 (setq diff-switches "-Naur")
 (add-to-list 'auto-mode-alist '("\\.\\(diffs?\\|patch\\|rej\\)\\'" . diff-mode))
 
-;; Xref integration
+;; Xref integration - disabled since no JDK <1.5 for amd64
 (defun my-load-xrefactory()
   (defvar xref-key-binding 'local)
   (setq exec-path (cons "~/xref" exec-path)
 	load-path (cons "~/xref/emacs" load-path))
   (load "xrefactory")
   )
-(add-hook 'java-mode-hook 'my-load-xrefactory)
+;;(add-hook 'java-mode-hook 'my-load-xrefactory)
 
 ;; Default c-mode settings
 (defun my-c-mode-common-hook ()
