@@ -76,3 +76,35 @@
 
 (setq auto-mode-alist (append '(("\\.cs\\'" . poor-mans-csharp-mode))
 			      auto-mode-alist))
+
+;; Flymake configuration - add integration for python and use Ant for Java
+(when (load "flymake" t)
+  (defun flymake-pyflakes-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+		       'flymake-create-temp-inplace))
+	   (local-file (file-relative-name
+			temp-file
+			(file-name-directory buffer-file-name))))
+      (list "pyflakes" (list local-file))))
+  (setq flymake-allowed-file-name-masks
+        '(("\\.\\(?:c\\(?:pp\\|xx\\|\\+\\+\\)?\\|CC\\)\\'" flymake-simple-make-init)
+;;          ("\\.xml\\'" flymake-xml-init)
+;;          ("\\.html?\\'" flymake-xml-init)
+          ("\\.cs\\'" flymake-simple-make-init)
+          ("\\.p[ml]\\'" flymake-perl-init)
+          ("\\.php[345]?\\'" flymake-php-init)
+          ("\\.h\\'" flymake-master-make-header-init flymake-master-cleanup)
+;;          ("\\.java\\'" flymake-simple-ant-java-init flymake-simple-java-cleanup)
+          ("[0-9]+\\.tex\\'" flymake-master-tex-init flymake-master-cleanup)
+          ("\\.tex\\'" flymake-simple-tex-init)
+          ("\\.idl\\'" flymake-simple-make-init))))
+
+(add-hook 'find-file-hook 'flymake-find-file-hook)
+
+;; Python integration 
+(add-hook 'python-mode-hook
+	  (lambda ()
+	    (unless (eq buffer-file-name nil) (flymake-mode 1)) ; don't invoke flymake in interpreter buffers
+	    (local-set-key [f2] 'flymake-goto-prev-error)
+	    (local-set-key [f3] 'flymake-goto-next-error)
+	    ))
