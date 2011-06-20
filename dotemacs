@@ -23,7 +23,6 @@
    (lambda (config-file)
      (my-load-config config-file))
    (list
-    "gnuserv-config"
     "colour-scheme"
     "mutt-config"
     "w3m-config"
