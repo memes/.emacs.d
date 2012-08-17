@@ -97,3 +97,9 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (add-hook 'html-helper-mode-hook 'hexcolour-add-to-font-lock)
 (setq html-helper-htmldtd-version
       "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\n  \"http://www.w3.org/TR/html4/strict.dtd\">\n")
+
+;; VTL mode for velocity
+(autoload 'turn-on-vtl-mode "vtl" nil t)
+(add-hook 'html-mode-hook 'turn-on-vtl-mode t t)
+(add-hook 'xml-mode-hook 'turn-on-vtl-mode t t)
+(add-hook 'text-mode-hook 'turn-on-vtl-mode t t)
