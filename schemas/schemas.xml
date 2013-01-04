@@ -10,4 +10,5 @@
   <include rules="docbook/schemas.xml"/>
   <include rules="j2ee/schemas.xml"/>
   <include rules="hibernate/schemas.xml"/>
+  <include rules="misc/schemas.xml"/>
 </locatingRules>

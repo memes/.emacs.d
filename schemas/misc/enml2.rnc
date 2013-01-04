@@ -1,0 +1,379 @@
+# 
+# Evernote Markup Language (ENML) 2.0 DTD
+# 
+# This expresses the structure of an XML document that can be used as the
+# 'content' of a Note within Evernote's data model.
+# The Evernote service will reject attempts to create or update notes if
+# their contents do not validate against this DTD.
+# 
+# This is based on a subset of XHTML which is intentionally broadened to
+# reject less real-world HTML, to reduce the likelihood of synchronization
+# failures.  This means that all attributes are defined as CDATA instead of
+# more-restrictive types, and every HTML element may embed every other
+# HTML element.
+# 
+# Copyright (c) 2007-2009 Evernote Corp.
+# 
+# $Date: 2007/10/15 18:00:00 $
+#
+
+# =========== External character mnemonic entities ===================
+
+# =================== Generic Attributes ===============================
+
+default namespace = "http://xml.evernote.com/pub/enml2.dtd"
+namespace a = "http://relaxng.org/ns/compatibility/annotations/1.0"
+
+coreattrs =
+  attribute style { text }?,
+  attribute title { text }?
+i18n =
+  attribute lang { text }?,
+  attribute xml:lang { text }?,
+  attribute dir { text }?
+focus =
+  attribute accesskey { text }?,
+  attribute tabindex { text }?
+attrs = coreattrs, i18n
+TextAlign = attribute align { text }?
+cellhalign =
+  attribute align { text }?,
+  attribute char { text }?,
+  attribute charoff { text }?
+cellvalign = attribute valign { text }?
+AnyContent =
+  (text
+   | a
+   | abbr
+   | acronym
+   | address
+   | area
+   | b
+   | bdo
+   | big
+   | blockquote
+   | br
+   | caption
+   | center
+   | cite
+   | code
+   | col
+   | colgroup
+   | dd
+   | del
+   | dfn
+   | \div
+   | dl
+   | dt
+   | em
+   | en-crypt
+   | en-media
+   | en-todo
+   | font
+   | h1
+   | h2
+   | h3
+   | h4
+   | h5
+   | h6
+   | hr
+   | i
+   | img
+   | ins
+   | kbd
+   | li
+   | map
+   | ol
+   | p
+   | pre
+   | q
+   | s
+   | samp
+   | small
+   | span
+   | strike
+   | strong
+   | sub
+   | sup
+   | table
+   | tbody
+   | td
+   | tfoot
+   | th
+   | thead
+   | tr
+   | tt
+   | u
+   | ul
+   | var)*
+# =========== Evernote-specific Elements and Attributes ===============
+en-note = element en-note { attlist.en-note, AnyContent }
+attlist.en-note &=
+  attrs,
+  attribute bgcolor { text }?,
+  attribute text { text }?
+en-crypt = element en-crypt { attlist.en-crypt, text }
+attlist.en-crypt &=
+  attribute hint { text }?,
+  [ a:defaultValue = "RC2" ] attribute cipher { text }?,
+  [ a:defaultValue = "64" ] attribute length { text }?
+en-todo = element en-todo { attlist.en-todo, empty }
+attlist.en-todo &=
+  [ a:defaultValue = "false" ] attribute checked { "true" | "false" }?
+en-media = element en-media { attlist.en-media, empty }
+attlist.en-media &=
+  attrs,
+  attribute type { text },
+  attribute hash { text },
+  attribute height { text }?,
+  attribute width { text }?,
+  attribute usemap { text }?,
+  attribute align { text }?,
+  attribute border { text }?,
+  attribute hspace { text }?,
+  attribute vspace { text }?,
+  attribute longdesc { text }?,
+  attribute alt { text }?
+# =========== Simplified HTML Elements and Attributes ===============
+a = element a { attlist.a, AnyContent }
+attlist.a &=
+  attrs,
+  focus,
+  attribute charset { text }?,
+  attribute type { text }?,
+  attribute name { text }?,
+  attribute href { text }?,
+  attribute hreflang { text }?,
+  attribute rel { text }?,
+  attribute rev { text }?,
+  attribute shape { text }?,
+  attribute coords { text }?,
+  attribute target { text }?
+abbr = element abbr { attlist.abbr, AnyContent }
+attlist.abbr &= attrs
+acronym = element acronym { attlist.acronym, AnyContent }
+attlist.acronym &= attrs
+address = element address { attlist.address, AnyContent }
+attlist.address &= attrs
+area = element area { attlist.area, AnyContent }
+attlist.area &=
+  attrs,
+  focus,
+  attribute shape { text }?,
+  attribute coords { text }?,
+  attribute href { text }?,
+  attribute nohref { text }?,
+  attribute alt { text }?,
+  attribute target { text }?
+b = element b { attlist.b, AnyContent }
+attlist.b &= attrs
+bdo = element bdo { attlist.bdo, AnyContent }
+attlist.bdo &=
+  coreattrs,
+  attribute lang { text }?,
+  attribute xml:lang { text }?,
+  attribute dir { text }?
+big = element big { attlist.big, AnyContent }
+attlist.big &= attrs
+blockquote = element blockquote { attlist.blockquote, AnyContent }
+attlist.blockquote &=
+  attrs,
+  attribute cite { text }?
+br = element br { attlist.br, AnyContent }
+attlist.br &=
+  coreattrs,
+  attribute clear { text }?
+caption = element caption { attlist.caption, AnyContent }
+attlist.caption &=
+  attrs,
+  attribute align { text }?
+center = element center { attlist.center, AnyContent }
+attlist.center &= attrs
+cite = element cite { attlist.cite, AnyContent }
+attlist.cite &= attrs
+code = element code { attlist.code, AnyContent }
+attlist.code &= attrs
+col = element col { attlist.col, AnyContent }
+attlist.col &=
+  attrs,
+  cellhalign,
+  cellvalign,
+  attribute span { text }?,
+  attribute width { text }?
+colgroup = element colgroup { attlist.colgroup, AnyContent }
+attlist.colgroup &=
+  attrs,
+  cellhalign,
+  cellvalign,
+  attribute span { text }?,
+  attribute width { text }?
+dd = element dd { attlist.dd, AnyContent }
+attlist.dd &= attrs
+del = element del { attlist.del, AnyContent }
+attlist.del &=
+  attrs,
+  attribute cite { text }?,
+  attribute datetime { text }?
+dfn = element dfn { attlist.dfn, AnyContent }
+attlist.dfn &= attrs
+\div = element div { attlist.div, AnyContent }
+attlist.div &= attrs, TextAlign
+dl = element dl { attlist.dl, AnyContent }
+attlist.dl &=
+  attrs,
+  attribute compact { text }?
+dt = element dt { attlist.dt, AnyContent }
+attlist.dt &= attrs
+em = element em { attlist.em, AnyContent }
+attlist.em &= attrs
+font = element font { attlist.font, AnyContent }
+attlist.font &=
+  coreattrs,
+  i18n,
+  attribute size { text }?,
+  attribute color { text }?,
+  attribute face { text }?
+h1 = element h1 { attlist.h1, AnyContent }
+attlist.h1 &= attrs, TextAlign
+h2 = element h2 { attlist.h2, AnyContent }
+attlist.h2 &= attrs, TextAlign
+h3 = element h3 { attlist.h3, AnyContent }
+attlist.h3 &= attrs, TextAlign
+h4 = element h4 { attlist.h4, AnyContent }
+attlist.h4 &= attrs, TextAlign
+h5 = element h5 { attlist.h5, AnyContent }
+attlist.h5 &= attrs, TextAlign
+h6 = element h6 { attlist.h6, AnyContent }
+attlist.h6 &= attrs, TextAlign
+hr = element hr { attlist.hr, AnyContent }
+attlist.hr &=
+  attrs,
+  attribute align { text }?,
+  attribute noshade { text }?,
+  attribute size { text }?,
+  attribute width { text }?
+i = element i { attlist.i, AnyContent }
+attlist.i &= attrs
+img = element img { attlist.img, AnyContent }
+attlist.img &=
+  attrs,
+  attribute src { text }?,
+  attribute alt { text }?,
+  attribute name { text }?,
+  attribute longdesc { text }?,
+  attribute height { text }?,
+  attribute width { text }?,
+  attribute usemap { text }?,
+  attribute ismap { text }?,
+  attribute align { text }?,
+  attribute border { text }?,
+  attribute hspace { text }?,
+  attribute vspace { text }?
+ins = element ins { attlist.ins, AnyContent }
+attlist.ins &=
+  attrs,
+  attribute cite { text }?,
+  attribute datetime { text }?
+kbd = element kbd { attlist.kbd, AnyContent }
+attlist.kbd &= attrs
+li = element li { attlist.li, AnyContent }
+attlist.li &=
+  attrs,
+  attribute type { text }?,
+  attribute value { text }?
+map = element map { attlist.map, AnyContent }
+attlist.map &=
+  i18n,
+  attribute title { text }?,
+  attribute name { text }?
+ol = element ol { attlist.ol, AnyContent }
+attlist.ol &=
+  attrs,
+  attribute type { text }?,
+  attribute compact { text }?,
+  attribute start { text }?
+p = element p { attlist.p, AnyContent }
+attlist.p &= attrs, TextAlign
+pre = element pre { attlist.pre, AnyContent }
+attlist.pre &=
+  attrs,
+  attribute width { text }?,
+  [ a:defaultValue = "preserve" ] attribute xml:space { "preserve" }?
+q = element q { attlist.q, AnyContent }
+attlist.q &=
+  attrs,
+  attribute cite { text }?
+s = element s { attlist.s, AnyContent }
+attlist.s &= attrs
+samp = element samp { attlist.samp, AnyContent }
+attlist.samp &= attrs
+small = element small { attlist.small, AnyContent }
+attlist.small &= attrs
+span = element span { attlist.span, AnyContent }
+attlist.span &= attrs
+strike = element strike { attlist.strike, AnyContent }
+attlist.strike &= attrs
+strong = element strong { attlist.strong, AnyContent }
+attlist.strong &= attrs
+sub = element sub { attlist.sub, AnyContent }
+attlist.sub &= attrs
+sup = element sup { attlist.sup, AnyContent }
+attlist.sup &= attrs
+table = element table { attlist.table, AnyContent }
+attlist.table &=
+  attrs,
+  attribute summary { text }?,
+  attribute width { text }?,
+  attribute border { text }?,
+  attribute cellspacing { text }?,
+  attribute cellpadding { text }?,
+  attribute align { text }?,
+  attribute bgcolor { text }?
+tbody = element tbody { attlist.tbody, AnyContent }
+attlist.tbody &= attrs, cellhalign, cellvalign
+td = element td { attlist.td, AnyContent }
+attlist.td &=
+  attrs,
+  cellhalign,
+  cellvalign,
+  attribute abbr { text }?,
+  attribute rowspan { text }?,
+  attribute colspan { text }?,
+  attribute nowrap { text }?,
+  attribute bgcolor { text }?,
+  attribute width { text }?,
+  attribute height { text }?
+tfoot = element tfoot { attlist.tfoot, AnyContent }
+attlist.tfoot &= attrs, cellhalign, cellvalign
+th = element th { attlist.th, AnyContent }
+attlist.th &=
+  attrs,
+  cellhalign,
+  cellvalign,
+  attribute abbr { text }?,
+  attribute rowspan { text }?,
+  attribute colspan { text }?,
+  attribute nowrap { text }?,
+  attribute bgcolor { text }?,
+  attribute width { text }?,
+  attribute height { text }?
+thead = element thead { attlist.thead, AnyContent }
+attlist.thead &= attrs, cellhalign, cellvalign
+tr = element tr { attlist.tr, AnyContent }
+attlist.tr &=
+  attrs,
+  cellhalign,
+  cellvalign,
+  attribute bgcolor { text }?
+tt = element tt { attlist.tt, AnyContent }
+attlist.tt &= attrs
+u = element u { attlist.u, AnyContent }
+attlist.u &= attrs
+ul = element ul { attlist.ul, AnyContent }
+attlist.ul &=
+  attrs,
+  attribute type { text }?,
+  attribute compact { text }?
+var = element var { attlist.var, AnyContent }
+attlist.var &= attrs
+start = en-note

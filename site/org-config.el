@@ -8,3 +8,8 @@
        (global-set-key "\C-cb" 'org-iswitchb))
        (setq org-insert-mode-line-in-empty t)
       )
+
+;; evernote integration
+(require 'evernote-mode)
+(setq evernote-username "memes"
+      evernote-enml-formatter-command '("w3m" "-dump" "-I" "UTF8" "-O" "UTF8"))
