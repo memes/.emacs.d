@@ -103,3 +103,11 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (add-hook 'html-mode-hook 'turn-on-vtl-mode t t)
 (add-hook 'xml-mode-hook 'turn-on-vtl-mode t t)
 (add-hook 'text-mode-hook 'turn-on-vtl-mode t t)
+
+;; Markdown integration
+(autoload 'markdown-mode "markdown-mode.el"
+    "Major mode for editing Markdown files" t)
+(setq auto-mode-alist 
+      (append (list '("\\.md$" . markdown-mode)
+		    '("\\.[Mm]arkdown$" . markdown-mode))
+	      auto-mode-alist))
