@@ -12,4 +12,5 @@
 ;; evernote integration
 (require 'evernote-mode)
 (setq evernote-username "memes"
+      evernote-password-cache t
       evernote-enml-formatter-command '("w3m" "-dump" "-I" "UTF8" "-O" "UTF8"))
