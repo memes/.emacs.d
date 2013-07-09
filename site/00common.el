@@ -58,6 +58,7 @@
 ;; Set key bindings
 (pc-bindings-mode)
 (pc-selection-mode)
+(setq suggest-key-bindings t)
 ;;(load "cua-mode")
 ;;(CUA-mode t)
 
@@ -121,3 +122,32 @@ If WHAT-TO-TRIM is non-nil, use the chars in it instead of whitespace."
     (if string
 	(memes-ltrim (memes-rtrim string what-to-trim) what-to-trim)
       string)))
+
+;; Include find file at point
+(require 'ffap)
+(ffap-bindings)
+
+;; Better identification of buffers containing identically named files in
+;; different paths
+(require 'uniquify)
+
+;; Keep a record of recent files
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
+;; Smooth scrolling
+(require 'smooth-scrolling)
+
+;; Whitespace - override default face for tabs to a blue
+(require 'show-wspace)
+(custom-set-faces
+    '(show-ws-tab ((t (:background "DodgerBlue4")))))
+(defun memes-toggle-whitespace ()
+    "Toggle all whitespace options."
+    (interactive)
+    (toggle-show-tabs-show-ws)
+    (toggle-show-hard-spaces-show-ws)
+    (toggle-show-trailing-whitespace-show-ws))
+(global-set-key (kbd "C-x SPC") 'memes-toggle-whitespace)
