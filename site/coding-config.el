@@ -122,3 +122,8 @@
 (autoload 'lua-mode "lua-mode" "Lua editing mode" t)
 (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
 (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
+
+;; Integrate with PlantUML
+(autoload 'plantuml-mode "plantuml-mode.el" nil t)
+(setq plu-plantuml-jar "~/Dropbox/plantuml.jar")
+(add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*@startuml" . plantuml-mode))
