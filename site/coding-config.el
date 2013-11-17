@@ -123,7 +123,6 @@
 (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
 (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
 
-;; Integrate with PlantUML
-(autoload 'plantuml-mode "plantuml-mode.el" nil t)
-(setq plu-plantuml-jar "~/Dropbox/plantuml.jar")
-(add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*@startuml" . plantuml-mode))
+;; Use Octave for .m files in preference to MATLAB
+(setq octave-block-offset 4)
+(setq auto-mode-alist (cons '("\\.m\\'" . octave-mode) auto-mode-alist))
