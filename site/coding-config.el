@@ -126,3 +126,17 @@
 ;; Use Octave for .m files in preference to MATLAB
 (setq octave-block-offset 4)
 (setq auto-mode-alist (cons '("\\.m\\'" . octave-mode) auto-mode-alist))
+
+;; Load scala from package
+(add-to-list 'memes-package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'memes-packages 'scala-mode2)
+
+;; Clojure packages
+(add-to-list 'memes-packages 'clojure-mode)
+(add-to-list 'memes-packages 'clojure-test-mode)
+
+;; Enable paredit for list like modes
+(when (fboundp 'paredit-mode)
+  (mapc (lambda (hook)
+	  (add-hook hook (lambda () (paredit-mode +1))))
+	'(emacs-lisp-mode-hook lisp-mode-hook clojure-mode-hook)))
