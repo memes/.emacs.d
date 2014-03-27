@@ -119,6 +119,7 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (require 'jade-mode)
 (add-to-list 'auto-mode-alist '("\\.styl$" . sws-mode))
 (add-to-list 'auto-mode-alist '("\\.jade$" . jade-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
 (require 'js-comint)
 (defun js-compile ()
   (interactive)
