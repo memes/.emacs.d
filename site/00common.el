@@ -55,9 +55,11 @@
 ;; Make all "yes or no" prompts show "y or n" instead
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; Set key bindings
-(pc-bindings-mode)
-(pc-selection-mode)
+;; Set key bindings for older versions
+(if (fboundp 'pc-bindings-mode)
+    (pc-bindings-mode))
+(if (fboundp 'pc-selection-mode)
+    (pc-selection-mode))
 (setq suggest-key-bindings t)
 ;;(load "cua-mode")
 ;;(CUA-mode t)
@@ -130,6 +132,7 @@ If WHAT-TO-TRIM is non-nil, use the chars in it instead of whitespace."
 ;; Better identification of buffers containing identically named files in
 ;; different paths
 (require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
 
 ;; Keep a record of recent files
 (require 'recentf)
@@ -141,7 +144,7 @@ If WHAT-TO-TRIM is non-nil, use the chars in it instead of whitespace."
 (require 'smooth-scrolling)
 
 ;; Whitespace - override default face for tabs to a blue
-(require 'show-wspace)
+(require 'show-wspace nil t)
 (custom-set-faces
     '(show-ws-tab ((t (:background "DodgerBlue4")))))
 (defun memes-toggle-whitespace ()
@@ -151,3 +154,20 @@ If WHAT-TO-TRIM is non-nil, use the chars in it instead of whitespace."
     (toggle-show-hard-spaces-show-ws)
     (toggle-show-trailing-whitespace-show-ws))
 (global-set-key (kbd "C-x SPC") 'memes-toggle-whitespace)
+
+;; Package management - allows list of packages to be added in other config
+;; files
+(defvar memes-packages ()
+  "List of packages to be installed in after-init-hook")
+(defvar memes-package-archives ()
+  "List of package archive definitions to add to system")
+(defun memes-load-packages()
+  "Load any packages defined in memes-packages in a hook"
+  (when (fboundp 'package-initialize)
+    (package-initialize)
+    (setq package-archives (append memes-package-archives package-archives))
+    (dolist (memes-package memes-packages)
+      (unless (package-installed-p memes-package)
+         (package-refresh-contents)
+         (package-install memes-package)))))
+(add-hook 'after-init-hook 'memes-load-packages)
