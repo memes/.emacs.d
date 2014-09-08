@@ -11,11 +11,14 @@
       default-directory "~/"
       ring-bell-function nil	;; Set up a non-audible bell,
       visible-bell t		;; as beeping is really annoying.
-      transient-mark-mode '1	;; Show mark'ed text
       next-line-add-newlines nil;;Don't add new lines to the end of a file
       default-major-mode 'text-mode	;; Open unidentified files in text mode
       require-final-newline nil ;; Don't add a newline to the end of files
       )
+;; Allow delete/replace on selected text and highlight selected text
+(delete-selection-mode t)
+(transient-mark-mode t)
+
 ;; Dictionary configuration
 (setq ispell-program-name "aspell"
       ispell-skip-html t
@@ -82,9 +85,6 @@
 (setq shell-mode-hook 'my-shell-setup)
 (setq process-coding-system-alist (cons '("bash" . raw-text-unix) 
 					process-coding-system-alist))
-
-;; A quick goto-line hack... bound to Alt-g
-(global-set-key "\M-g" 'goto-line)
 
 ;; Quickly revert a file, bound to Alt-r
 (defun revert-buffer-noconfirm () 
