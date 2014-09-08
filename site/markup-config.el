@@ -188,3 +188,9 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 
 (add-hook 'comint-preoutput-filter-functions 'node-repl-comint-preoutput-filter)
 (add-hook 'comint-output-filter-functions 'node-repl-comint-preoutput-filter)
+
+;; Enable pandoc for markdown
+(add-to-list 'memes-package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'memes-packages 'pandoc-mode)
+(add-hook 'markdown-mode-hook 'turn-on-pandoc)
+(add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
