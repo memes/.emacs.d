@@ -194,3 +194,4 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (add-to-list 'memes-packages 'pandoc-mode)
 (add-hook 'markdown-mode-hook 'turn-on-pandoc)
 (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
+(setq markdown-command "pandoc --smart -f markdown -t html")
