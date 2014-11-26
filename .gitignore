@@ -1,0 +1,11 @@
+# Standard ignores
+*~
+.*~
+\#*
+.\#*
+~$*
+
+# Ignore auto-generated files and folders
+elpa/
+auto-save-list/
+recentf

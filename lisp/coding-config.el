@@ -128,12 +128,11 @@
 (setq auto-mode-alist (cons '("\\.m\\'" . octave-mode) auto-mode-alist))
 
 ;; Load scala from package
-(add-to-list 'memes-package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'memes-package-archives '("melpa" . "http://stable.melpa.org/packages/"))
 (add-to-list 'memes-packages 'scala-mode2)
 
-;; Clojure packages
+;; Clojure package
 (add-to-list 'memes-packages 'clojure-mode)
-(add-to-list 'memes-packages 'clojure-test-mode)
 
 ;; Enable paredit for list like modes
 (when (fboundp 'paredit-mode)

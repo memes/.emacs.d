@@ -18,7 +18,7 @@
 		) auto-mode-alist))
 ;; nXML configuration
 (setq rng-schema-locating-files (append 
-				 '("~/emacs/schemas/schemas.xml")
+				 '(concat user-emacs-directory (convert-standard-filename "schemas/schemas.xml"))
 				 rng-schema-locating-files
 				 )
       nxml-slash-auto-complete-flag t
@@ -26,7 +26,7 @@
 
 ;; Load Norman Walsh's unicode support libraries
 (require 'cl)
-(setq unicode-character-list-file "~/emacs/site/unichars.el")
+(setq unicode-character-list-file (concat user-emacs-directory (convert-standard-filename "lisp/unichars.el")))
 (load "xmlunicode")
 
 ;; Stolen from "drkm" post on nxml list
@@ -190,7 +190,7 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (add-hook 'comint-output-filter-functions 'node-repl-comint-preoutput-filter)
 
 ;; Enable pandoc for markdown
-(add-to-list 'memes-package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'memes-package-archives '("melpa" . "http://stable.melpa.org/packages/"))
 (add-to-list 'memes-packages 'pandoc-mode)
 (add-hook 'markdown-mode-hook 'turn-on-pandoc)
 (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)

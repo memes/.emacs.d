@@ -7,5 +7,5 @@
        (global-set-key "\C-ca" 'org-agenda)
        (global-set-key "\C-cb" 'org-iswitchb))
        (setq org-insert-mode-line-in-empty t)
-       (setq org-plantuml-jar-path "~/emacs/site/plantuml.jar")
+       (setq org-plantuml-jar-path (concat user-emacs-directory (convert-standard-filename "lisp/plantuml.jar")))
       )

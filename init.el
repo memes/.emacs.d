@@ -1,8 +1,8 @@
 ;; MEmes emacs setup file, culled from various sources.
 ;; $Id: dotemacs 7 2008-06-27 15:21:24Z memes $
 
-;; Add MEmes site lisp to load path
-(add-to-list 'load-path "~/emacs/site")
+;; Add MEmes lisp files to load path
+(add-to-list 'load-path (concat user-emacs-directory (convert-standard-filename "lisp/")))
 
 ;; Don't break when loading configuration files
 (defun my-load-config (config-file)
