@@ -18,7 +18,7 @@
 		) auto-mode-alist))
 ;; nXML configuration
 (setq rng-schema-locating-files (append 
-				 '(concat user-emacs-directory (convert-standard-filename "schemas/schemas.xml"))
+				 '(convert-standard-filename (expand-file-name "schemas/schemas.xml" user-emacs-directory))
 				 rng-schema-locating-files
 				 )
       nxml-slash-auto-complete-flag t
@@ -26,7 +26,7 @@
 
 ;; Load Norman Walsh's unicode support libraries
 (require 'cl)
-(setq unicode-character-list-file (concat user-emacs-directory (convert-standard-filename "lisp/unichars.el")))
+(setq unicode-character-list-file (convert-standard-filename (expand-file-name "lisp/unichars.el" user-emacs-directory)))
 (load "xmlunicode")
 
 ;; Stolen from "drkm" post on nxml list

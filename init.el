@@ -1,8 +1,13 @@
 ;; MEmes emacs setup file, culled from various sources.
 ;; $Id: dotemacs 7 2008-06-27 15:21:24Z memes $
 
+;; Latest customisations require Emacs24; not supporting anything less than that
+(let ((min_supported 24))
+  (unless (>= emacs-major-version min_supported)
+    (error "Emacs %d or later is required for this configuration" min_supported)))
+
 ;; Add MEmes lisp files to load path
-(add-to-list 'load-path (concat user-emacs-directory (convert-standard-filename "lisp/")))
+(add-to-list 'load-path (convert-standard-filename (expand-file-name "lisp/" user-emacs-directory)))
 
 ;; Don't break when loading configuration files
 (defun my-load-config (config-file)
@@ -11,6 +16,18 @@
     (message (concat "Loaded " config-file))
       (message (concat "Unable to load " config-file ", no matter"))))
 
+;; List of configuration files to be loaded
+(defvar memes-config-files
+    (list
+      "colour-scheme"
+      "mutt-config"
+      "w3m-config"
+      "coding-config"
+      "sql-config"
+      "markup-config"
+      "org-config")
+  "List of configuration files to load that can be changed by host config")
+
 ;; Load common settings
 (my-load-config "00common")
 
@@ -18,20 +35,8 @@
 (my-load-config (concat "01" my-hostname))
 
 ;; Load the configuration settings
-(progn
-  (mapcar
-   (lambda (config-file)
-     (my-load-config config-file))
-   (list
-    "colour-scheme"
-    "mutt-config"
-    "w3m-config"
-    "coding-config"
-    "sql-config"
-    "markup-config"
-    "org-config"
-    ))
-  )
+(dolist (memes-config-file memes-config-files)
+  (my-load-config memes-config-file))
   
 ;; Load common final settings
 (my-load-config "98common")

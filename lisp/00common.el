@@ -8,7 +8,7 @@
       inhibit-startup-message t	;; Don't show the startup message
       my-author-name "memes"
       user-full-name "Matthew Emes"
-      default-directory "~/"
+      default-directory (convert-standard-filename (expand-file-name "~/"))
       ring-bell-function nil	;; Set up a non-audible bell,
       visible-bell t		;; as beeping is really annoying.
       next-line-add-newlines nil;;Don't add new lines to the end of a file
