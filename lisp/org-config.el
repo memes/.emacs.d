@@ -1,6 +1,7 @@
 ;; Configuration options for org-mode
 ;; $Id: $
 
+;; Prefer OS package for org-mode - only enable if installed
 (cond ((fboundp 'org-mode)
        ;; Integrate org-mode
        (global-set-key "\C-cl" 'org-store-link)
