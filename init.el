@@ -13,19 +13,20 @@
 (defun my-load-config (config-file)
   "Load a supplied configuration file, don't fuss if unavailable"
   (if (load config-file t)
-    (message (concat "Loaded " config-file))
-      (message (concat "Unable to load " config-file ", no matter"))))
+      (message (concat "Loaded " config-file))
+    (message (concat "Unable to load " config-file ", no matter"))))
 
 ;; List of configuration files to be loaded
 (defvar memes-config-files
-    (list
-      "colour-scheme"
-      "mutt-config"
-      "w3m-config"
-      "coding-config"
-      "sql-config"
-      "markup-config"
-      "org-config")
+  (list
+   "colour-scheme"
+   "mutt-config"
+   "w3m-config"
+   "org-config"
+   "coding-config"
+   "sql-config"
+   "markup-config"
+   )
   "List of configuration files to load that can be changed by host config")
 
 ;; Load common settings
@@ -37,9 +38,9 @@
 ;; Load the configuration settings
 (dolist (memes-config-file memes-config-files)
   (my-load-config memes-config-file))
-  
-;; Load common final settings
-(my-load-config "98common")
 
 ;; Load machine specific final settings, if they exist
-(my-load-config (concat "99" my-hostname))
+(my-load-config (concat "98" my-hostname))
+  
+;; Load common final settings
+(my-load-config "99common")
