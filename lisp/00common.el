@@ -140,9 +140,6 @@ If WHAT-TO-TRIM is non-nil, use the chars in it instead of whitespace."
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-;; Smooth scrolling
-(require 'smooth-scrolling)
-
 ;; Whitespace - override default face for tabs to a blue
 (require 'show-wspace nil t)
 (custom-set-faces
