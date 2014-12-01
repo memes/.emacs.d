@@ -76,15 +76,21 @@
 (setq shell-command-switch "-c")
 (setenv "SHELL" shell-file-name)
 (defun memes-shell-setup()
-  "bash under Emacs 20"
+  "bash under Emacs"
   (setq comint-scroll-show-maximum-output 'this)
   (setq comint-completion-addsuffix t)
   (setq comint-process-echoes nil)
   (setq comint-eol-on-send t)
-  (make-variable-buffer-local 'comint-completion-addsuffix))
+  (make-variable-buffer-local 'comint-completion-addsuffix)
+  (if (memq window-system '(win32 w32))
+      (setq w32-quote-process-args ?\")))
 (setq shell-mode-hook 'memes-shell-setup)
-(setq process-coding-system-alist (cons '("bash" . raw-text-unix) 
-					process-coding-system-alist))
+(cond ((memq window-system '(win32 w32))
+       (setq process-coding-system-alist (cons '("bash" . (undecided-dos . undecided-unix))
+					       process-coding-system-alist)))
+      (t
+       (setq process-coding-system-alist (cons '("bash" . raw-text-unix) 
+					       process-coding-system-alist))))
 
 ;; Quickly revert a file, bound to Alt-r
 (defun revert-buffer-noconfirm () 
@@ -94,36 +100,6 @@
   )
 (global-set-key [?\M-r] 'revert-buffer-noconfirm)
 (put 'revert-buffer 'disabled nil)
-
-;; Function to create a new frame and execute command in it
-(defun memes-run-command-new-frame (command)
-  "Run command in a new frame."
-  (select-frame (make-frame))
-  (call-interactively command))
-
-(defun memes-ltrim (string &optional what-to-trim)
-  "Return STRING with any whitespace trimmed from the left.
-If WHAT-TO-TRIM is non-nil, use the chars in it instead of whitespace."
-  (save-match-data
-    (if (string-match (format "^[%s]+" (or what-to-trim "\t ")) string)
-	(substring string (match-end 0) nil)
-      string)))
-
-(defun memes-rtrim (string &optional what-to-trim)
-  "Return STRING with any whitespace trimmed from the right.
-If WHAT-TO-TRIM is non-nil, use the chars in it instead of whitespace."
-  (save-match-data
-    (if (string-match (format "[%s]+$" (or what-to-trim "\t ")) string)
-	(substring string 0 (match-beginning 0))
-      string)))
-
-(defun memes-trim (string &optional what-to-trim)
-  "Return STRING with any whitespace trimmed from the left & right.
-If WHAT-TO-TRIM is non-nil, use the chars in it instead of whitespace."
-  (save-match-data
-    (if string
-	(memes-ltrim (memes-rtrim string what-to-trim) what-to-trim)
-      string)))
 
 ;; Include find file at point
 (require 'ffap)
@@ -142,8 +118,6 @@ If WHAT-TO-TRIM is non-nil, use the chars in it instead of whitespace."
 
 ;; Whitespace - override default face for tabs to a blue
 (require 'show-wspace nil t)
-(custom-set-faces
-    '(show-ws-tab ((t (:background "DodgerBlue4")))))
 (defun memes-toggle-whitespace ()
     "Toggle all whitespace options."
     (interactive)
