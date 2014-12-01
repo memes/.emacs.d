@@ -2,11 +2,11 @@
 ;; $Id: 00common.el 2 2007-10-18 23:31:31Z memes $
 
 (setq debug-on-error t	;; Backtrace on error
-      my-hostname	;; Get my hostname from FQDN
+      memes-hostname	;; Get my hostname from FQDN
       	(substring (system-name) 0
 		   (string-match "\\..+" (system-name)))
       inhibit-startup-message t	;; Don't show the startup message
-      my-author-name "memes"
+      memes-author-name "memes"
       user-full-name "Matthew Emes"
       default-directory (convert-standard-filename (expand-file-name "~/"))
       ring-bell-function nil	;; Set up a non-audible bell,
@@ -35,7 +35,7 @@
 (add-hook 'text-mode-hook 'flyspell-mode)	;; Turn on spell check
 
 ;; Set titles for frame and icon (%f == file name, %b == buffer name)
-(setq-default frame-title-format (concat my-hostname ":" "%f"))
+(setq-default frame-title-format (concat memes-hostname ":" "%f"))
 (setq-default icon-title-format "%b")
 
 ;; Disable the blinking cursor, toolbar and tooltips
@@ -75,14 +75,14 @@
 (setq explicit-shell-file-name shell-file-name)
 (setq shell-command-switch "-c")
 (setenv "SHELL" shell-file-name)
-(defun my-shell-setup()
+(defun memes-shell-setup()
   "bash under Emacs 20"
   (setq comint-scroll-show-maximum-output 'this)
   (setq comint-completion-addsuffix t)
   (setq comint-process-echoes nil)
   (setq comint-eol-on-send t)
   (make-variable-buffer-local 'comint-completion-addsuffix))
-(setq shell-mode-hook 'my-shell-setup)
+(setq shell-mode-hook 'memes-shell-setup)
 (setq process-coding-system-alist (cons '("bash" . raw-text-unix) 
 					process-coding-system-alist))
 
@@ -96,7 +96,7 @@
 (put 'revert-buffer 'disabled nil)
 
 ;; Function to create a new frame and execute command in it
-(defun my-run-command-new-frame (command)
+(defun memes-run-command-new-frame (command)
   "Run command in a new frame."
   (select-frame (make-frame))
   (call-interactively command))

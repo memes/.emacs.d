@@ -36,7 +36,7 @@
        (add-hook 'post-mode-hook 'memes-post-mode-hook)
        (setq auto-mode-alist
 	     ;; Recognise mutt temp file as a post-mode candidate
-	     (cons (cons (concat "mutt-" my-hostname "-[0-9]+-[0-9]+") 'post-mode)
+	     (cons (cons (concat "mutt-" memes-hostname "-[0-9]+-[0-9]+") 'post-mode)
 		   auto-mode-alist))
        (setq post-should-prompt-for-attachment 'Never)))
 

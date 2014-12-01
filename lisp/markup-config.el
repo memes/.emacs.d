@@ -39,7 +39,7 @@
     (insert "</" tag-name ">")))
 
 ;; Define the nxml entry config
-(defun my-nxml-mode-hook ()
+(defun memes-nxml-mode-hook ()
   "Prepare nXML mode"
   (auto-fill-mode t)
   (set-fill-column 78)
@@ -54,7 +54,7 @@
   (define-key nxml-mode-map [menu-bar unichar]
 	      (cons "UniChar" unicode-character-menu-map))
   (set-input-method 'xml))
-(add-hook 'nxml-mode-hook 'my-nxml-mode-hook)
+(add-hook 'nxml-mode-hook 'memes-nxml-mode-hook)
 ;; DTD mode
 (autoload 'dtd-mode "tdtd" "Major mode for SGML and XML DTDs." t)
 (autoload 'dtd-etags "tdtd" 
