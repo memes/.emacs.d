@@ -132,13 +132,16 @@
   "List of packages to be installed in after-init-hook")
 (defvar memes-package-archives ()
   "List of package archive definitions to add to system")
+(defvar memes-after-load-packages-hook nil
+  "Hook that will be called after loading MELPA packages")
 (defun memes-load-packages()
   "Load any packages defined in memes-packages in a hook"
   (when (fboundp 'package-initialize)
     (package-initialize)
     (setq package-archives (append memes-package-archives package-archives))
+    (package-refresh-contents)
     (dolist (memes-package memes-packages)
       (unless (package-installed-p memes-package)
-         (package-refresh-contents)
-         (package-install memes-package)))))
+	(package-install memes-package)))
+    (run-hooks 'memes-after-load-packages-hook)))
 (add-hook 'after-init-hook 'memes-load-packages)

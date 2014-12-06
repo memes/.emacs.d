@@ -20,11 +20,6 @@
 			   (paredit-mode +1))))
 	memes-paredit-mode-hooks))
 
-;; Autocomplete package
-(add-to-list 'memes-packages 'auto-complete)
-(with-eval-after-load "auto-complete"
-  (global-auto-complete-mode t))
-
 ;; Patch/diff mode if installed on OS
 (cond ((fboundp 'diff-mode)
        ;; Autoload diff mode for diff/patch like files
@@ -118,3 +113,12 @@
 (add-to-list 'memes-packages 'clojure-mode)
 (with-eval-after-load "clojure-mode"
   (add-to-list 'memes-paredit-mode-hooks clojure-mode-hook))
+
+;; Go language support
+(add-to-list 'memes-packages 'go-mode)
+(defun memes-go-mode-hook ()
+  "Hook to be executed in all go buffers"
+  (local-set-key (kbd "M-.") 'godef-jump)
+  (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)
+  (local-set-key (kbd "C-c i") 'go-goto-imports))
+(add-hook 'go-mode-hook 'memes-go-mode-hook)
