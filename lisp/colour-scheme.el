@@ -2,7 +2,7 @@
 ;; $Id: colour-scheme.el 1 2007-10-18 23:15:33Z memes $
 
 ;; Solarized theme requires dash
-(add-to-list 'memes-package-archives '("melpa" . "http://stable.melpa.org/packages/"))
+(add-to-list 'memes-package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'memes-packages 'solarized-theme)
 
 ;; Register a hook to load a theme and turn on font decorations

@@ -28,7 +28,7 @@
        (add-to-list 'auto-mode-alist '("\\.\\(diffs?\\|patch\\|rej\\)\\'" . diff-mode))))
 
 ;; Add flycheck to all supported languages
-(add-to-list 'memes-package-archives '("melpa" . "http://stable.melpa.org/packages/"))
+(add-to-list 'memes-package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'memes-packages 'flycheck)
 (with-eval-after-load "flycheck"
   (add-hook 'emacs-startup-hook 'global-flycheck-mode))
@@ -122,3 +122,13 @@
   (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)
   (local-set-key (kbd "C-c i") 'go-goto-imports))
 (add-hook 'go-mode-hook 'memes-go-mode-hook)
+
+;; Javascript support
+(add-to-list 'memes-packages 'js2-mode)
+(add-to-list 'memes-packages 'ac-js2)
+(defun memes-js-mode-hook ()
+  "Hook to be executed for js modes"
+  (js2-minor-mode)
+  (ac-js2-mode))
+(add-hook 'js-mode-hook 'memes-js-mode-hook)
+(add-to-list 'interpreter-mode-alist '("node" . js2-mode))

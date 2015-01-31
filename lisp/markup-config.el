@@ -114,7 +114,7 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 
 
 ;; Enable pandoc for markdown
-(add-to-list 'memes-package-archives '("melpa" . "http://stable.melpa.org/packages/"))
+(add-to-list 'memes-package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'memes-packages 'pandoc-mode)
 (add-hook 'markdown-mode-hook 'turn-on-pandoc)
 (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
