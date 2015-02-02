@@ -5,10 +5,6 @@
 (put 'xml-mode 'flyspell-mode-predicate 'sgml-mode-flyspell-verify)
 (put 'nxml-mode 'flyspell-mode-predicate 'sgml-mode-flyspell-verify)
 
-;; PHP support - disabled, use the one that comes with nXhtml mode
-;;(require 'php-mode)
-;;(autoload 'php-mode "php-mode" "Major mode to edit PHP files." t)
-
 ;; SGML/XML handling via psgml/nxml-mode
 (require 'rng-loc)
 (autoload 'nxml-mode  "nxml-mode" "Major mode to edit XML files." t)
@@ -94,13 +90,9 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 							    "white" "black"))
 					  (:background ,colour)))))))))
 (add-hook 'css-mode-hook 'hexcolour-add-to-font-lock)
-(add-hook 'html-helper-mode-hook 'hexcolour-add-to-font-lock)
-(setq html-helper-htmldtd-version
-      "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\n  \"http://www.w3.org/TR/html4/strict.dtd\">\n")
 
 ;; VTL mode for velocity
 (autoload 'turn-on-vtl-mode "vtl" nil t)
-(add-hook 'html-mode-hook 'turn-on-vtl-mode t t)
 (add-hook 'xml-mode-hook 'turn-on-vtl-mode t t)
 (add-hook 'text-mode-hook 'turn-on-vtl-mode t t)
 
@@ -119,3 +111,11 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (add-hook 'markdown-mode-hook 'turn-on-pandoc)
 (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
 (setq markdown-command "pandoc --smart -f markdown -t html")
+
+;; Add web-mode
+(add-to-list 'memes-packages 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.\\(html?\\|php\\|jsp\\|aspx?\\|cshtml\\)\\'" . web-mode))
+(defun memes-web-mode-hook ()
+  "Prepare web-mode for use"
+  (setq web-mode-markup-indent-offset 2))
+(add-hook 'web-mode-hook 'memes-web-mode-hook)
