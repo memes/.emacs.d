@@ -132,3 +132,7 @@
   (ac-js2-mode))
 (add-hook 'js-mode-hook 'memes-js-mode-hook)
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+;; Use eslint for flycheck and JavaScript
+(with-eval-after-load "flycheck"
+  (setq-default flycheck-disabled-checkers '(javascript-jshint))
+  (flycheck-add-mode 'javascript-eslint 'web-mode))
