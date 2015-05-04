@@ -114,7 +114,7 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 
 ;; Add web-mode
 (add-to-list 'memes-packages 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.\\(html?\\|php\\|jsp\\|aspx?\\|cshtml\\|jsx\\)\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(html?\\|php\\|jsp\\|aspx?\\|cshtml\\|jsx|\\json\\)\\'" . web-mode))
 (defun memes-web-mode-hook ()
   "Prepare web-mode for use"
   (setq web-mode-markup-indent-offset 2)
