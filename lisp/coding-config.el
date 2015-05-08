@@ -129,9 +129,13 @@
 (defun memes-js-mode-hook ()
   "Hook to be executed for js modes"
   (js2-minor-mode)
-  (ac-js2-mode))
+  (ac-js2-mode)
+  (setq js-indent-level 2
+        js2-basic-offset 2
+        js2-bounce-indent-p t))
 (add-hook 'js-mode-hook 'memes-js-mode-hook)
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+
 ;; Use eslint for flycheck and JavaScript
 (with-eval-after-load "flycheck"
   (setq-default flycheck-disabled-checkers '(javascript-jshint))
