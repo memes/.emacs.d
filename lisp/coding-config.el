@@ -30,8 +30,16 @@
 ;; Add flycheck to all supported languages
 (add-to-list 'memes-package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'memes-packages 'flycheck)
-(with-eval-after-load "flycheck"
-  (add-hook 'emacs-startup-hook 'global-flycheck-mode))
+;; Disable jshint and json checkers
+(setq-default flycheck-disabled-checkers '(javascript-jshint json-jsonlist))
+
+;; Configure flycheck after initialisation is compelete
+(defun memes-init-flycheck ()
+  (global-flycheck-mode)
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  (flycheck-add-mode 'javascript-eslint 'js-mode))
+
+(add-hook 'after-init-hook 'memes-init-flycheck)
 
 ;; C-mode hook common to all sub-modes
 (defun memes-c-mode-common-hook ()
@@ -136,7 +144,3 @@
 (add-hook 'js-mode-hook 'memes-js-mode-hook)
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 
-;; Use eslint for flycheck and JavaScript
-(with-eval-after-load "flycheck"
-  (setq-default flycheck-disabled-checkers '(javascript-jshint))
-  (flycheck-add-mode 'javascript-eslint 'web-mode))
