@@ -89,7 +89,11 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 				  'face `((:foreground ,(if (> 128.0 (hexcolour-luminance colour))
 							    "white" "black"))
 					  (:background ,colour)))))))))
-(add-hook 'css-mode-hook 'hexcolour-add-to-font-lock)
+(defun memes-css-mode-hook()
+  "Prepare for css-mode"
+  (setq css-indent-offset 2)
+  (hexcolour-add-to-font-lock))
+(add-hook 'css-mode-hook 'memes-css-mode-hook)
 
 ;; VTL mode for velocity
 (autoload 'turn-on-vtl-mode "vtl" nil t)
@@ -97,18 +101,12 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (add-hook 'text-mode-hook 'turn-on-vtl-mode t t)
 
 ;; Markdown integration
-(autoload 'markdown-mode "markdown-mode.el"
-    "Major mode for editing Markdown files" t)
-(setq auto-mode-alist 
-      (append (list '("\\.md$" . markdown-mode)
-		    '("\\.[Mm]arkdown$" . markdown-mode))
-	      auto-mode-alist))
-
+(add-to-list 'memes-package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'memes-packages 'markdown-mode)
 
 ;; Enable pandoc for markdown
-(add-to-list 'memes-package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'memes-packages 'pandoc-mode)
-(add-hook 'markdown-mode-hook 'turn-on-pandoc)
+(add-hook 'markdown-mode-hook 'pandoc-mode)
 (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
 (setq markdown-command "pandoc --smart -f markdown -t html")
 
@@ -117,9 +115,10 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (add-to-list 'auto-mode-alist '("\\.\\(html?\\|php\\|jsp\\|aspx?\\|cshtml\\|jsx\\)\\'" . web-mode))
 (defun memes-web-mode-hook ()
   "Prepare web-mode for use"
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-markup-indent-offset 2
+	web-mode-css-indent-offset 2
+	web-mode-code-indent-offset 2
+	indent-tabs-mode nil)
   (auto-complete-mode 1)
   (setq web-mode-ac-sources-alist
 	'(("css" . (ac-source-words-in-buffer ac-source-css-property))
@@ -131,3 +130,8 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
       (let ((web-mode-enable-part-face nil))
 	ad-do-it)
     ad-do-it))
+
+;; LESS mode
+(add-to-list 'memes-packages 'less-css-mode)
+(with-eval-after-load "less-css-mode"
+  (setq less-css-compile-at-save nil))

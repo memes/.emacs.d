@@ -144,4 +144,4 @@
       (unless (package-installed-p memes-package)
 	(package-install memes-package)))
     (run-hooks 'memes-after-load-packages-hook)))
-(add-hook 'after-init-hook 'memes-load-packages)
+(add-hook 'after-init-hook 'memes-load-packages 'memes-init-flycheck)

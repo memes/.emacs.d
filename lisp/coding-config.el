@@ -35,11 +35,10 @@
 
 ;; Configure flycheck after initialisation is compelete
 (defun memes-init-flycheck ()
+  "Turn on flycheck everywhere"
   (global-flycheck-mode)
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'js-mode))
-
-(add-hook 'after-init-hook 'memes-init-flycheck)
 
 ;; C-mode hook common to all sub-modes
 (defun memes-c-mode-common-hook ()
@@ -140,7 +139,14 @@
   (ac-js2-mode)
   (setq js-indent-level 2
         js2-basic-offset 2
-        js2-bounce-indent-p t))
+        js2-bounce-indent-p t
+	indent-tabs-mode nil))
 (add-hook 'js-mode-hook 'memes-js-mode-hook)
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 
+;; Coffee script support
+(add-to-list 'memes-packages 'coffee-mode)
+(defun memes-coffee-mode-hook ()
+  "Hook to be executed for coffee-mode"
+  (coffee-tab-width 2))
+(add-hook 'coffee-mode-hook 'memes-coffee-mode-hook)
