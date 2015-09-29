@@ -150,3 +150,12 @@
   "Hook to be executed for coffee-mode"
   (coffee-tab-width 2))
 (add-hook 'coffee-mode-hook 'memes-coffee-mode-hook)
+
+;; TypeScript support
+(add-to-list 'memes-packages 'tss)
+(defun memes-typescript-mode-hook ()
+  "Hook executed for typescript-mode"
+  (tss-setup-current-buffer))
+;;  (setq indent-tabs-mode nil))
+(autoload 'typescript-mode "typescript-mode" "Typescript." t)
+(add-to-list 'auto-mode-alist '("\.ts$" . typescript-mode))
