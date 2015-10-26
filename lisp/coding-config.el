@@ -125,6 +125,7 @@
 (add-to-list 'memes-packages 'go-mode)
 (defun memes-go-mode-hook ()
   "Hook to be executed in all go buffers"
+  (setq godef-command "/home/memes/lib/go/bin/godef")
   (local-set-key (kbd "M-.") 'godef-jump)
   (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)
   (local-set-key (kbd "C-c i") 'go-goto-imports))
