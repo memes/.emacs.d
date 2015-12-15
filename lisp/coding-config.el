@@ -40,6 +40,10 @@
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'js-mode))
 
+;; Set C-x c to launch compile command
+(setq compilation-read-command nil)
+(global-set-key "\C-xc" 'compile)
+
 ;; C-mode hook common to all sub-modes
 (defun memes-c-mode-common-hook ()
   (setq c-basic-offset 4)
@@ -123,12 +127,41 @@
 
 ;; Go language support
 (add-to-list 'memes-packages 'go-mode)
+(add-to-list 'memes-packages 'exec-path-from-shell)
+(defconst memes-goroot
+  (convert-standard-filename (expand-file-name
+			      (cond ((memq window-system '(w32 win32)) "~/go")
+				    ((memq window-system '(ns mac)) "~/Library/go")
+				    (t "~/lib/go"))))
+  "Local root of projects - separate OS go libs from manually installed")
+(defun memes-gb-project-path (filename)
+  "Returns the gb project path for filename or nil"
+  (let ((gb-info-results (shell-command-to-string (concat "cd " (directory-file-name (file-name-directory filename)) " && gb info"))))
+    (if (string-match "GB_PROJECT_DIR=\"\\(.*\\)\"" gb-info-results)
+	(let ((gb-project-path (match-string 1 gb-info-results)))
+	  (if (and (file-directory-p (concat gb-project-path "/src"))
+		   (file-directory-p (concat gb-project-path "/vendor")))
+	      gb-project-path
+	    nil))
+      nil)))
+(defun memes-go-compile ()
+  "Returns a string of shell commands to compile current project"
+  (let ((gb-project-path (memes-gb-project-path buffer-file-name)))
+    (if gb-project-path
+	(format "cd %s && gb build && gb test -v && GOPATH=\"%s:%s/vendor${GOPATH:+:${GOPATH}}\" go tool vet %s/src" gb-project-path gb-project-path gb-project-path gb-project-path)
+      (let ((go-project-path (memes-find-first-child-of "src" buffer-file-name)))
+	(if go-project-path
+	    (format "cd %s && GO15VENDOREXPERIMENT=1 go build -v ./... && GO15VENDOREXPERIMENT=1 go tool vet ." go-project-path)
+	  (format "cd %s && go build -v && go tool vet ." (directory-file-name (file-name-directory buffer-file-name))))))))
 (defun memes-go-mode-hook ()
   "Hook to be executed in all go buffers"
-  (setq godef-command "/home/memes/lib/go/bin/godef")
+  (require 'go-autocomplete (convert-standard-filename (concat memes-goroot "/src/github.com/nsf/gocode/emacs/go-autocomplete.el")))
+  ;;(require 'go-oracle (convert-standard-filename (concat memes-goroot "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
   (local-set-key (kbd "M-.") 'godef-jump)
   (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)
-  (local-set-key (kbd "C-c i") 'go-goto-imports))
+  (local-set-key (kbd "C-c i") 'go-goto-imports)
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (set (make-local-variable 'compile-command) (memes-go-compile)))
 (add-hook 'go-mode-hook 'memes-go-mode-hook)
 
 ;; Javascript support
