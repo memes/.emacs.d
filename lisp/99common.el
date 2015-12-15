@@ -10,9 +10,15 @@
 ;; Autocomplete package
 (add-to-list 'memes-packages 'auto-complete)
 (with-eval-after-load "auto-complete"
-  (global-auto-complete-mode t)
+  (require 'auto-complete-config)
+  (ac-config-default)
   (ac-set-trigger-key "TAB")
   (ac-set-trigger-key "<tab>"))
+
+;; Allow exec-path to inherit from shell
+(add-to-list 'memes-packages 'exec-path-from-shell)
+(with-eval-after-load "exec-path-from-shell"
+  (exec-path-from-shell-initialize))
 
 ;; Disable backtrace on error
 (setq debug-on-error nil)

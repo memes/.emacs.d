@@ -70,6 +70,14 @@
 ;; Start in home dir
 (cd "~")
 
+;; Handle OS specific setup
+(cond ((memq window-system '(win32 w32))
+       (setq focus-follows-mouse nil))
+      ((memq window-system '(ns mac))
+       (setq focus-follows-mouse nil))
+      (t
+       (setq focus-follows-mouse t)))
+
 ;; Configure Emacs to use Bash as the shell
 (setq shell-file-name "bash")
 (setq explicit-shell-file-name shell-file-name)
@@ -145,3 +153,28 @@
 	(package-install memes-package)))
     (run-hooks 'memes-after-load-packages-hook)))
 (add-hook 'after-init-hook 'memes-load-packages 'memes-init-flycheck)
+
+;; Utility to find a named parent directory
+(defun memes-find-parent (memes-name memes-path)
+  "Find the parent diretory of memes-path with name memes-name"
+  (let ((memes-parent (directory-file-name (file-name-directory memes-path)))
+	(memes-check (file-name-nondirectory memes-path)))
+    (cond ((equal memes-name memes-check)
+	   (string-remove-suffix "/" memes-path))
+	  ((equal "/" memes-parent)
+	   nil)
+	  (t
+	   (memes-find-parent memes-name memes-parent)))))
+(defun memes-find-first-child-of (memes-name memes-path)
+  "Walks the path (virtually) until the parent dir is found. E.g. looking for src in /home/memes/tmp/src/foo/bar/baz will return /home/memes/tmp/src/foo"
+  (let* ((memes-parent (directory-file-name (file-name-directory memes-path)))
+	(memes-parent-name (file-name-nondirectory memes-parent))
+	(memes-check (file-name-nondirectory memes-path)))
+    (cond ((equal memes-name memes-check)
+	   nil)
+	  ((equal "/" memes-parent)
+	   nil)
+	  ((equal memes-name memes-parent-name)
+	   memes-path)
+	  (t
+	   (memes-find-first-child-of memes-name memes-parent)))))
