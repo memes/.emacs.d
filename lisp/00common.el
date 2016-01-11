@@ -178,3 +178,16 @@
 	   memes-path)
 	  (t
 	   (memes-find-first-child-of memes-name memes-parent)))))
+
+;; Enable default winmove bindings; Meta-Left/Right/Up/Down to navigate
+(windmove-default-keybindings 'meta)
+
+;; Use framemove to extend windmove to frames
+(require 'cl)
+(add-to-list 'memes-package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'memes-packages 'framemove)
+(defun memes-init-framemove ()
+  "Initialise framemove after packages have been loaded"
+  (require 'framemove)
+  (setq framemove-hook-into-windmove t))
+(add-hook 'memes-after-load-packages-hook 'memes-init-framemove)
