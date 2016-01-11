@@ -136,7 +136,7 @@
   "Local root of projects - separate OS go libs from manually installed")
 (defun memes-gb-project-path (filename)
   "Returns the gb project path for filename or nil"
-  (let ((gb-info-results (shell-command-to-string (concat "cd " (directory-file-name (file-name-directory filename)) " && gb info"))))
+  (let ((gb-info-results (shell-command-to-string (format "cd %s && %s/bin/gb info" (directory-file-name (file-name-directory filename)) memes-goroot))))
     (if (string-match "GB_PROJECT_DIR=\"\\(.*\\)\"" gb-info-results)
 	(let ((gb-project-path (match-string 1 gb-info-results)))
 	  (if (and (file-directory-p (concat gb-project-path "/src"))
@@ -148,13 +148,14 @@
   "Returns a string of shell commands to compile current project"
   (let ((gb-project-path (memes-gb-project-path buffer-file-name)))
     (if gb-project-path
-	(format "cd %s && gb build && gb test -v && GOPATH=\"%s:%s/vendor${GOPATH:+:${GOPATH}}\" go tool vet %s/src" gb-project-path gb-project-path gb-project-path gb-project-path)
+	(format "cd %s && %s/bin/gb build && %s/bin/gb test -v && GOPATH=\"%s:%s/vendor${GOPATH:+:${GOPATH}}\" go tool vet %s/src" gb-project-path memes-goroot memes-goroot gb-project-path gb-project-path gb-project-path)
       (let ((go-project-path (memes-find-first-child-of "src" buffer-file-name)))
 	(if go-project-path
 	    (format "cd %s && GO15VENDOREXPERIMENT=1 go build -v ./... && GO15VENDOREXPERIMENT=1 go tool vet ." go-project-path)
 	  (format "cd %s && go build -v && go tool vet ." (directory-file-name (file-name-directory buffer-file-name))))))))
 (defun memes-go-mode-hook ()
   "Hook to be executed in all go buffers"
+  (require 'exec-path-from-shell)
   (require 'go-autocomplete (convert-standard-filename (concat memes-goroot "/src/github.com/nsf/gocode/emacs/go-autocomplete.el")))
   ;;(require 'go-oracle (convert-standard-filename (concat memes-goroot "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
   (local-set-key (kbd "M-.") 'godef-jump)
