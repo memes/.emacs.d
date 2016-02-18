@@ -12,8 +12,6 @@
 
 ;; Enable paredit for list like modes
 (with-eval-after-load "paredit"
-  ;; Don't override M-r since I use it too often
-  (define-key paredit-mode-map (kbd "<M-r>" nil))
   ;; Add paredit mode to all hooks in memes-paredit-mode-hooks
   (mapc (lambda (hook)
 	  (add-hook hook (lambda ()
@@ -148,11 +146,11 @@
   "Returns a string of shell commands to compile current project"
   (let ((gb-project-path (memes-gb-project-path buffer-file-name)))
     (if gb-project-path
-	(format "cd %s && %s/bin/gb build && %s/bin/gb test -v && GOPATH=\"%s:%s/vendor${GOPATH:+:${GOPATH}}\" go tool vet %s/src" gb-project-path memes-goroot memes-goroot gb-project-path gb-project-path gb-project-path)
+	(format "cd %s && %s/bin/gb build && %s/bin/gb test -v=1 && GOPATH=\"%s:%s/vendor${GOPATH:+:${GOPATH}}\" go tool vet %s/src" gb-project-path memes-goroot memes-goroot gb-project-path gb-project-path gb-project-path)
       (let ((go-project-path (memes-find-first-child-of "src" buffer-file-name)))
 	(if go-project-path
-	    (format "cd %s && GO15VENDOREXPERIMENT=1 go build -v ./... && GO15VENDOREXPERIMENT=1 go tool vet ." go-project-path)
-	  (format "cd %s && go build -v && go tool vet ." (directory-file-name (file-name-directory buffer-file-name))))))))
+	    (format "cd %s && GO15VENDOREXPERIMENT=1 go build -v ./... && GPVENDOREXPERIMENT=1 go test -v=1 && GO15VENDOREXPERIMENT=1 go tool vet ." go-project-path)
+	  (format "cd %s && go build -v && go test -v=1 && go tool vet ." (directory-file-name (file-name-directory buffer-file-name))))))))
 (defun memes-go-mode-hook ()
   "Hook to be executed in all go buffers"
   (require 'exec-path-from-shell)
