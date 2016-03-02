@@ -192,3 +192,23 @@
 ;;  (setq indent-tabs-mode nil))
 (autoload 'typescript-mode "typescript-mode" "Typescript." t)
 (add-to-list 'auto-mode-alist '("\.ts$" . typescript-mode))
+
+;; C# mode
+(add-to-list 'memes-packages 'csharp-mode)
+(defun memes-csharp-mode-hook ()
+  "C# hook"
+  (electric-pair-mode 1))
+(add-hook 'csharp-mode-hook 'memes-csharp-mode-hook)
+(autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
+(setq auto-mode-alist (append '(("\\.cs$" . csharp-mode)) auto-mode-alist))
+
+;; Swift support
+(add-to-list 'memes-packages 'swift-mode)
+(defun memes-swift-mode-hook ()
+  "Swift hook"
+  (flycheck-mode)
+  (add-to-list 'flycheck-checkers 'swift)
+  (setq flycheck-swift-target nil
+	swift-repl-executable (cond ((memq window-system '(ns mac)) "xcrun swift")
+				    (t "swift"))))
+(add-hook 'swift-mode-hook 'memes-swift-mode-hook)
