@@ -28,13 +28,14 @@
 ;; Add flycheck to all supported languages
 (add-to-list 'memes-package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'memes-packages 'flycheck)
-;; Disable jshint and json checkers
-(setq-default flycheck-disabled-checkers '(javascript-jshint json-jsonlist))
 
 ;; Configure flycheck after initialisation is compelete
 (defun memes-init-flycheck ()
   "Turn on flycheck everywhere"
   (global-flycheck-mode)
+  ;; Disable jshint and json checkers
+  (setq-default flycheck-disabled-checkers
+		(append flycheck-disabled-checkers '(javascript-jshint json-jsonlint)))
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'js-mode))
 
@@ -209,7 +210,6 @@
 (add-to-list 'memes-packages 'swift-mode)
 (defun memes-swift-mode-hook ()
   "Swift hook"
-  (flycheck-mode)
   (add-to-list 'flycheck-checkers 'swift)
   (setq flycheck-swift-target nil
 	swift-repl-executable (cond ((memq window-system '(ns mac)) "xcrun swift")
