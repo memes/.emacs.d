@@ -135,3 +135,13 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (add-to-list 'memes-packages 'less-css-mode)
 (with-eval-after-load "less-css-mode"
   (setq less-css-compile-at-save nil))
+
+;; YAML mode
+(add-to-list 'memes-packages 'yaml-mode)
+(defun memes-yaml-mode-hook ()
+  "Configure YAML mode"
+  (define-key yaml-mode-map "\C-m" 'newline-and-indent))
+(add-hook 'yaml-mode-hook 'memes-yaml-mode-hook)
+
+;; TOML mode
+(add-to-list 'memes-packages 'toml-mode)
