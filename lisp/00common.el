@@ -124,15 +124,10 @@
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-;; Whitespace - override default face for tabs to a blue
-(require 'show-wspace nil t)
-(defun memes-toggle-whitespace ()
-    "Toggle all whitespace options."
-    (interactive)
-    (toggle-show-tabs-show-ws)
-    (toggle-show-hard-spaces-show-ws)
-    (toggle-show-trailing-whitespace-show-ws))
-(global-set-key (kbd "C-x SPC") 'memes-toggle-whitespace)
+;; Whitespace
+(autoload 'whitespace-mode "whitespace" "Toggle whitespace visualisation" t)
+(setq whitespace-style '(face empty tabs lines-tail trailing))
+(global-set-key (kbd "C-x SPC") 'whitespace-mode)
 
 ;; Package management - allows list of packages to be added in other config
 ;; files
