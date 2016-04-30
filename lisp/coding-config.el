@@ -38,6 +38,7 @@
 		(append flycheck-disabled-checkers '(javascript-jshint json-jsonlint)))
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'js-mode))
+(add-hook 'memes-after-load-packages-hook 'memes-init-flycheck)
 
 ;; Set C-x c to launch compile command
 (setq compilation-read-command nil)
