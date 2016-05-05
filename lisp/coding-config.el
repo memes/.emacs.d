@@ -182,6 +182,33 @@
 (add-hook 'js-mode-hook 'memes-js-mode-hook)
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 
+;; Stolen from http://stackoverflow.com/a/35806330 - better JSON support in js2-mode
+(make-variable-buffer-local 'js2-parse-as-json)
+(defadvice js2-reparse (before json)
+  (setq js2-buffer-file-name buffer-file-name))
+(ad-activate 'js2-reparse)
+(defadvice js2-parse-statement (around json)
+  (if (and (= tt js2-LC)
+	   js2-buffer-file-name
+	   (or js2-parse-as-json
+	       (string-equal (substring js2-buffer-file-name -5) ".json"))
+	   (eq (+ (save-excursion
+		    (goto-char (point-min))
+		    (back-to-indentation)
+		    (while (eolp)
+		      (next-line)
+		      (back-to-indentation))
+		    (point)) 1) js2-ts-cursor))
+      (setq ad-return-value (js2-parse-assign-expr))
+    ad-do-it))
+(ad-activate 'js2-parse-statement)
+(define-derived-mode json-mode js2-mode "JSON"
+  "Major mode for editing JSON data."
+  :group 'json
+  (setq js2-parse-as-json t)
+  (js2-reparse t))
+(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
+
 ;; Coffee script support
 (add-to-list 'memes-packages 'coffee-mode)
 (defun memes-coffee-mode-hook ()
@@ -216,3 +243,11 @@
 	swift-repl-executable (cond ((memq window-system '(ns mac)) "xcrun swift")
 				    (t "swift"))))
 (add-hook 'swift-mode-hook 'memes-swift-mode-hook)
+
+;; Protobuf support
+(add-to-list 'memes-packages 'protobuf-mode)
+(add-to-list 'memes-packages 'flycheck-protobuf)
+(defun memes-protobuf-mode-hook ()
+  "Protobuf hook"
+  (add-to-list 'flycheck-checkers 'protobuf-protoc-reporter t))
+(add-hook 'protobuf-mode-hook 'memes-protobuf-mode-hook)
