@@ -150,17 +150,21 @@
   "Returns a string of shell commands to compile current project"
   (let ((gb-project-path (memes-gb-project-path buffer-file-name)))
     (if gb-project-path
-	(format "cd %s && gb build && gb test -v=1 && GOPATH=\"%s:%s/vendor${GOPATH:+:${GOPATH}}\" go tool vet %s/src" gb-project-path gb-project-path gb-project-path gb-project-path)
-      (let ((go-project-path (memes-find-first-child-of "src" buffer-file-name)))
-	(if go-project-path
-	    (format "cd %s && go build -v ./... && go test -v=1 && go tool vet ." go-project-path)
-	  (format "cd %s && go build -v && go test -v=1 && go tool vet ." (directory-file-name (file-name-directory buffer-file-name))))))))
+	(format "cd %s && gb build && gb test -v=1 && go tool vet %s/src" gb-project-path gb-project-path)
+      (let ((go-project-path (or (directory-file-name (file-name-directory (memes-find-parent "src" buffer-file-name)))
+				 (directory-file-name (file-name-directory buffer-file-name)))))
+	(format "cd %s && go build -v ./... && go test -v=1 && go tool vet ." go-project-path)))))
 (defun memes-go-mode-hook ()
   "Hook to be executed in all go buffers"
   (require 'exec-path-from-shell)
   (require 'go-autocomplete (convert-standard-filename (concat memes-goroot "/src/github.com/nsf/gocode/emacs/go-autocomplete.el")))
   ;;(require 'go-oracle (convert-standard-filename (concat memes-goroot "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
   (go-eldoc-setup)
+  (make-local-variable 'process-environment)
+  (setenv "GOPATH"
+	  (mapconcat 'identity
+		     (append (split-string (or (go-guess-gopath) "") path-separator) (list memes-goroot))
+		     path-separator))
   (local-set-key (kbd "M-.") 'godef-jump)
   (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)
   (local-set-key (kbd "C-c i") 'go-goto-imports)
