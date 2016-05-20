@@ -118,7 +118,7 @@
        (setq auto-mode-alist (cons '("\\.m\\'" . octave-mode) auto-mode-alist))))
 
 ;; Load scala from package
-(add-to-list 'memes-packages 'scala-mode2)
+(add-to-list 'memes-packages 'scala-mode)
 
 ;; Clojure package
 (add-to-list 'memes-packages 'clojure-mode)
