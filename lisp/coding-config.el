@@ -159,6 +159,7 @@
   (require 'exec-path-from-shell)
   (require 'go-autocomplete (convert-standard-filename (concat memes-goroot "/src/github.com/nsf/gocode/emacs/go-autocomplete.el")))
   ;;(require 'go-oracle (convert-standard-filename (concat memes-goroot "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
+  (setq gofmt-command "goimports")
   (go-eldoc-setup)
   (make-local-variable 'process-environment)
   (setenv "GOPATH"
