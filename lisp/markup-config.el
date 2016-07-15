@@ -22,7 +22,7 @@
 
 ;; Load Norman Walsh's unicode support libraries
 (require 'cl)
-(setq unicode-character-list-file (convert-standard-filename (expand-file-name "lisp/unichars.el" user-emacs-directory)))
+(load "unichars")
 (load "xmlunicode")
 
 ;; Stolen from "drkm" post on nxml list

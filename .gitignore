@@ -6,6 +6,7 @@
 ~$*
 
 # Ignore auto-generated files and folders
+*.elc
 elpa/
 auto-save-list/
 recentf

@@ -6,6 +6,9 @@
   (unless (>= emacs-major-version min_supported)
     (error "Emacs %d or later is required for this configuration" min_supported)))
 
+;; (Re-)compile lisp files as necessary
+(byte-recompile-directory (convert-standard-filename (expand-file-name "lisp" user-emacs-directory)) 0)
+
 ;; Add MEmes lisp files to load path
 (add-to-list 'load-path (convert-standard-filename (expand-file-name "lisp/" user-emacs-directory)))
 
