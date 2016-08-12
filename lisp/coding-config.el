@@ -130,6 +130,8 @@
 (add-to-list 'memes-packages 'exec-path-from-shell)
 (add-to-list 'memes-packages 'go-eldoc)
 (add-to-list 'memes-packages 'go-errcheck)
+(add-to-list 'memes-packages 'go-rename)
+(add-to-list 'memes-packages 'go-guru)
 (defconst memes-goroot
   (convert-standard-filename (expand-file-name
 			      (cond ((memq window-system '(w32 win32)) "~/go")
@@ -169,8 +171,11 @@
   (local-set-key (kbd "M-.") 'godef-jump)
   (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)
   (local-set-key (kbd "C-c i") 'go-goto-imports)
+  (local-set-key (kbd "C-c r") 'go-rename)
   (add-hook 'before-save-hook 'gofmt-before-save)
-  (set (make-local-variable 'compile-command) (memes-go-compile)))
+  (set (make-local-variable 'compile-command) (memes-go-compile))
+  (go-guru-hl-identifier-mode)
+  )
 (add-hook 'go-mode-hook 'memes-go-mode-hook)
 
 ;; Javascript support
