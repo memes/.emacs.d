@@ -124,6 +124,9 @@
 (add-to-list 'memes-packages 'clojure-mode)
 (with-eval-after-load "clojure-mode"
   (add-to-list 'memes-paredit-mode-hooks clojure-mode-hook))
+(add-to-list 'memes-packages 'cider)
+(with-eval-after-load "cider-mode"
+  (add-hook 'cider-mode-hook #'eldoc-mode))
 
 ;; Go language support
 (add-to-list 'memes-packages 'go-mode)
@@ -256,7 +259,6 @@
 
 ;; Protobuf support
 (add-to-list 'memes-packages 'protobuf-mode)
-(add-to-list 'memes-packages 'flycheck-protobuf)
 (defun memes-protobuf-mode-hook ()
   "Protobuf hook"
   (add-to-list 'flycheck-checkers 'protobuf-protoc-reporter t))
