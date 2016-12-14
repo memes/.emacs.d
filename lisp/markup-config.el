@@ -112,6 +112,7 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 
 ;; Add web-mode
 (add-to-list 'memes-packages 'web-mode)
+(add-to-list 'memes-packages 'company-web)
 (add-to-list 'auto-mode-alist '("\\.\\(html?\\|php\\|jsp\\|aspx?\\|cshtml\\|jsx\\)\\'" . web-mode))
 (defun memes-web-mode-hook ()
   "Prepare web-mode for use"
@@ -119,11 +120,7 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 	web-mode-css-indent-offset 2
 	web-mode-code-indent-offset 2
 	indent-tabs-mode nil)
-  (auto-complete-mode 1)
-  (setq web-mode-ac-sources-alist
-	'(("css" . (ac-source-words-in-buffer ac-source-css-property))
-	  ("html" . (ac-source-words-in-buffer ac-source-abbrev))
-	  ("jsx" . (ac-source-words-in-buffer ac-source-words-in-same-mode-buffers)))))
+  (set (make-local-variable 'company-backends) '(company-web-html company-files)))
 (add-hook 'web-mode-hook 'memes-web-mode-hook)
 (defadvice web-mode-highlight-part (around tweak-jsx activate)
   (if (equal web-mode-content-type "jsx")

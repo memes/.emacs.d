@@ -6,14 +6,12 @@
 (with-eval-after-load "yasnippet"
   (yas-global-mode 1))
 
-;; Enable auto-complete if present
-;; Autocomplete package
-(add-to-list 'memes-packages 'auto-complete)
-(with-eval-after-load "auto-complete"
-  (require 'auto-complete-config)
-  (ac-config-default)
-  (ac-set-trigger-key "TAB")
-  (ac-set-trigger-key "<tab>"))
+;; Enable company-mode if present
+(add-to-list 'memes-packages 'company)
+(with-eval-after-load "company"
+  (setq company-tooltip-align-annotations t
+	company-auto-complete t))
+(add-hook 'memes-after-load-packages-hook 'global-company-mode)
 
 ;; Allow exec-path to inherit from shell
 (add-to-list 'memes-packages 'exec-path-from-shell)
