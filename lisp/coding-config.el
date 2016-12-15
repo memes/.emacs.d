@@ -230,13 +230,31 @@
 (add-hook 'coffee-mode-hook 'memes-coffee-mode-hook)
 
 ;; TypeScript support
-(add-to-list 'memes-packages 'tss)
-(defun memes-typescript-mode-hook ()
+(add-to-list 'memes-packages 'tide)
+(defun memes-tide-mode-hook ()
   "Hook executed for typescript-mode"
-  (tss-setup-current-buffer))
-;;  (setq indent-tabs-mode nil))
-(autoload 'typescript-mode "typescript-mode" "Typescript." t)
-(add-to-list 'auto-mode-alist '("\.ts$" . typescript-mode))
+  (tide-setup)
+  (flycheck-mode +1)
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  (company-mode +1)
+  (add-hook 'before-save-hook 'tide-format-before-save nil t))
+(add-hook 'typescript-mode-hook #'memes-tide-mode-hook)
+(setq typescript-indent-level 2
+      tide-format-options
+      '(:tabSize 2 
+	:indentSize 2
+	:insertSpaceAfterCommaDelimiter t
+	:insertSpaceAfterSemicolonInForStatements t
+	:insertSpaceBeforeAndAfterBinaryOperators t
+	:insertSpaceAfterKeywordsInControlFlowStatements t
+	:insertSpaceAfterFunctionKeywordForAnonymousFunctions t
+	:insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis nil
+	:insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets nil
+	:insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces nil
+	:insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces nil
+	:placeOpenBraceOnNewLineForControlBlocks nil
+	:placeOpenBraceOnNewLineForFunctions nil))
 
 ;; C# mode
 (add-to-list 'memes-packages 'csharp-mode)
@@ -263,3 +281,7 @@
   "Protobuf hook"
   (add-to-list 'flycheck-checkers 'protobuf-protoc-reporter t))
 (add-hook 'protobuf-mode-hook 'memes-protobuf-mode-hook)
+
+;; Angular 2 support
+(add-to-list 'memes-packages 'ng2-mode)
+(add-hook 'ng2-mode-hook 'memes-tide-mode-hook)
