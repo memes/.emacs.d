@@ -285,3 +285,7 @@
 ;; Angular 2 support
 (add-to-list 'memes-packages 'ng2-mode)
 (add-hook 'ng2-mode-hook 'memes-tide-mode-hook)
+(defun memes-ng2-html-mode-hook ()
+  "Hook for ng2 HTML mode"
+  (auto-fill-mode 0))
+(add-hook 'ng2-html-mode-hook 'memes-ng2-html-mode-hook)
