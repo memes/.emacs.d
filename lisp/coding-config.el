@@ -1,14 +1,21 @@
-;; General coding configuration options
-;; $Id: coding-config.el 7 2008-06-27 15:21:24Z memes $
+;;; coding-config.el --- Configuration for coding
+
+;;; Commentary:
+
+;;; Code:
+
+(defvar memes-packages)
 
 ;; Show matching parenthesis where possible
 (show-paren-mode 1)
 
+;; Enable paredit mode
+(add-to-list 'memes-packages 'paredit)
 ;; List of hooks to add paredit support
 ;;  - add to this list when modes should hook paredit
 (defvar memes-paredit-mode-hooks
   '(emacs-lisp-mode-hook lisp-mode-hook)
-  "Hooks to include paredit support")
+  "Hooks to include paredit support.")
 
 ;; Enable paredit for list like modes
 (with-eval-after-load "paredit"
@@ -26,12 +33,12 @@
        (add-to-list 'auto-mode-alist '("\\.\\(diffs?\\|patch\\|rej\\)\\'" . diff-mode))))
 
 ;; Add flycheck to all supported languages
-(add-to-list 'memes-package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'memes-packages 'flycheck)
 
 ;; Configure flycheck after initialisation is compelete
 (defun memes-init-flycheck ()
-  "Turn on flycheck everywhere"
+  "Turn on flycheck everywhere."
+  (require 'flycheck)
   (global-flycheck-mode)
   ;; Disable jshint and json checkers
   (setq-default flycheck-disabled-checkers
@@ -41,12 +48,13 @@
 (add-hook 'memes-after-load-packages-hook 'memes-init-flycheck)
 
 ;; Set C-x c to launch compile command
-(setq compilation-read-command nil)
+(setq-default compilation-read-command nil)
 (global-set-key "\C-xc" 'compile)
 
 ;; C-mode hook common to all sub-modes
 (defun memes-c-mode-common-hook ()
-  (setq c-basic-offset 4)
+  "Hook common to all 'c-mode' derived modes."
+  (setq-default c-basic-offset 4)
   (c-set-offset 'substatement-open 0)
   (c-set-offset 'statement-case-open 0)
   (c-set-offset 'case-label '+)
@@ -56,13 +64,14 @@
 (add-hook 'c-mode-common-hook 'memes-c-mode-common-hook)
 
 ;; Define a set of path/c-style option pairs
-(setq memes-c-style-alist
-      '(("~/dev/kernel" . "linux-tabs-only")
-	(nil . "k&r")))
+(defvar memes-c-style-alist
+      '(("~/projects/kernel" . "linux-tabs-only")
+	(nil . "k&r"))
+      "List of paths and c-style options to apply.")
 
 ;; Function to pick a c-style based on filepath
 (defun memes-choose-c-style ()
-  "Choose a C-style based on filepath of buffer"
+  "Choose a C-style based on filepath of buffer."
   (let ((style
 	 (assoc-default buffer-file-name memes-c-style-alist
 			(lambda (pattern path)
@@ -79,7 +88,7 @@
 
 ;; Setup Linux style - mostly from Documentation/CodingStyle
 (defun c-lineup-arglist-tabs-only (ignored)
-  "Line up argument lists by tabs, not spaces"
+  "Line up argument lists by tabs, not spaces."
   (let* ((anchor (c-langelem-pos c-syntactic-element))
 	 (column (c-langelem-2nd-pos c-syntactic-element))
 	 (offset (- (1+ column) anchor))
@@ -92,7 +101,7 @@
      (arglist-cont-nonempty
       c-lineup-gcc-asm-reg
       c-lineup-arglist-tabs-only)))
-  "Linux CodingStyle recommendations")
+  "Linux CodingStyle recommendations.")
 (c-add-style "linux-tabs-only" linux-tabs-only)
 
 ;; Groovy/Grails integration
@@ -106,15 +115,16 @@
 	       (require 'groovy-electric)
 	       (groovy-electric-mode))))
 
-;; Lua mode if installed OS package
-(cond ((fboundp 'lua-mode)
-       (autoload 'lua-mode "lua-mode" "Lua editing mode" t)
-       (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
-       (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))))
+;; Lua mode
+(add-to-list 'memes-packages 'lua-mode)
+(with-eval-after-load 'lua-mode
+  (autoload 'lua-mode "lua-mode" "Lua editing mode" t)
+  (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+  (add-to-list 'interpreter-mode-alist '("lua" . lua-mode)))
 
 ;; Use Octave for .m files in preference to MATLAB when OS package is installed
 (cond ((fboundp 'octave-mode)
-       (setq octave-block-offset 4)
+       (setq-default octave-block-offset 4)
        (setq auto-mode-alist (cons '("\\.m\\'" . octave-mode) auto-mode-alist))))
 
 ;; Load scala from package
@@ -123,7 +133,7 @@
 ;; Clojure package
 (add-to-list 'memes-packages 'clojure-mode)
 (with-eval-after-load "clojure-mode"
-  (add-to-list 'memes-paredit-mode-hooks clojure-mode-hook))
+  (add-to-list 'memes-paredit-mode-hooks 'clojure-mode-hook))
 (add-to-list 'memes-packages 'cider)
 (with-eval-after-load "cider-mode"
   (add-hook 'cider-mode-hook #'eldoc-mode))
@@ -140,9 +150,9 @@
 			      (cond ((memq window-system '(w32 win32)) "~/go")
 				    ((memq window-system '(ns mac)) "~/Library/go")
 				    (t "~/lib/go"))))
-  "Local root of projects - separate OS go libs from manually installed")
+  "Local GOROOT customisations based on OS.")
 (defun memes-gb-project-path (filename)
-  "Returns the gb project path for filename or nil"
+  "Return the gb project path for FILENAME, or nil if not using gb."
   (let ((gb-info-results (shell-command-to-string (format "cd %s && gb info" (directory-file-name (file-name-directory filename))))))
     (if (string-match "GB_PROJECT_DIR=\"\\(.*\\)\"" gb-info-results)
 	(let ((gb-project-path (match-string 1 gb-info-results)))
@@ -152,7 +162,7 @@
 	    nil))
       nil)))
 (defun memes-go-compile ()
-  "Returns a string of shell commands to compile current project"
+  "Return a string of shell commands to compile current project."
   (let ((gb-project-path (memes-gb-project-path buffer-file-name)))
     (if gb-project-path
 	(format "cd %s && gb build && gb test -v=1 && go tool vet %s/src" gb-project-path gb-project-path)
@@ -160,11 +170,11 @@
 				 (directory-file-name (file-name-directory buffer-file-name)))))
 	(format "cd %s && go build -v ./... && go test -v=1 && go tool vet ." go-project-path)))))
 (defun memes-go-mode-hook ()
-  "Hook to be executed in all go buffers"
+  "Hook to be executed in all go buffers."
   (require 'exec-path-from-shell)
   (require 'go-autocomplete (convert-standard-filename (concat memes-goroot "/src/github.com/nsf/gocode/emacs/go-autocomplete.el")))
   ;;(require 'go-oracle (convert-standard-filename (concat memes-goroot "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
-  (setq gofmt-command "goimports")
+  (setq-default gofmt-command "goimports")
   (go-eldoc-setup)
   (make-local-variable 'process-environment)
   (setenv "GOPATH"
@@ -185,13 +195,13 @@
 (add-to-list 'memes-packages 'js2-mode)
 (add-to-list 'memes-packages 'ac-js2)
 (defun memes-js-mode-hook ()
-  "Hook to be executed for js modes"
+  "Hook to be executed for js modes."
   (js2-minor-mode)
   (ac-js2-mode)
-  (setq js-indent-level 2
-        js2-basic-offset 2
-        js2-bounce-indent-p t
-	indent-tabs-mode nil))
+  (setq-default js-indent-level 2
+		js2-basic-offset 2
+		js2-bounce-indent-p t
+		indent-tabs-mode nil))
 (add-hook 'js-mode-hook 'memes-js-mode-hook)
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 
@@ -225,14 +235,14 @@
 ;; Coffee script support
 (add-to-list 'memes-packages 'coffee-mode)
 (defun memes-coffee-mode-hook ()
-  "Hook to be executed for coffee-mode"
+  "Hook to be executed for coffee-mode."
   (coffee-tab-width 2))
 (add-hook 'coffee-mode-hook 'memes-coffee-mode-hook)
 
 ;; TypeScript support
 (add-to-list 'memes-packages 'tide)
 (defun memes-tide-mode-hook ()
-  "Hook executed for typescript-mode"
+  "Hook executed for typescript-mode."
   (tide-setup)
   (flycheck-mode +1)
   (eldoc-mode +1)
@@ -240,26 +250,26 @@
   (company-mode +1)
   (add-hook 'before-save-hook 'tide-format-before-save nil t))
 (add-hook 'typescript-mode-hook #'memes-tide-mode-hook)
-(setq typescript-indent-level 2
-      tide-format-options
-      '(:tabSize 2 
-	:indentSize 2
-	:insertSpaceAfterCommaDelimiter t
-	:insertSpaceAfterSemicolonInForStatements t
-	:insertSpaceBeforeAndAfterBinaryOperators t
-	:insertSpaceAfterKeywordsInControlFlowStatements t
-	:insertSpaceAfterFunctionKeywordForAnonymousFunctions t
-	:insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis nil
-	:insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets nil
-	:insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces nil
-	:insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces nil
-	:placeOpenBraceOnNewLineForControlBlocks nil
-	:placeOpenBraceOnNewLineForFunctions nil))
+(setq-default typescript-indent-level 2
+	      tide-format-options
+	      '(:tabSize 2 
+			 :indentSize 2
+			 :insertSpaceAfterCommaDelimiter t
+			 :insertSpaceAfterSemicolonInForStatements t
+			 :insertSpaceBeforeAndAfterBinaryOperators t
+			 :insertSpaceAfterKeywordsInControlFlowStatements t
+			 :insertSpaceAfterFunctionKeywordForAnonymousFunctions t
+			 :insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis nil
+			 :insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets nil
+			 :insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces nil
+			 :insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces nil
+			 :placeOpenBraceOnNewLineForControlBlocks nil
+			 :placeOpenBraceOnNewLineForFunctions nil))
 
 ;; C# mode
 (add-to-list 'memes-packages 'csharp-mode)
 (defun memes-csharp-mode-hook ()
-  "C# hook"
+  "C# mode hook."
   (electric-pair-mode 1))
 (add-hook 'csharp-mode-hook 'memes-csharp-mode-hook)
 (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
@@ -268,7 +278,7 @@
 ;; Swift support
 (add-to-list 'memes-packages 'swift-mode)
 (defun memes-swift-mode-hook ()
-  "Swift hook"
+  "Swift mode hook."
   (add-to-list 'flycheck-checkers 'swift)
   (setq flycheck-swift-target nil
 	swift-repl-executable (cond ((memq window-system '(ns mac)) "xcrun swift")
@@ -278,7 +288,7 @@
 ;; Protobuf support
 (add-to-list 'memes-packages 'protobuf-mode)
 (defun memes-protobuf-mode-hook ()
-  "Protobuf hook"
+  "Protobuf mode hook."
   (add-to-list 'flycheck-checkers 'protobuf-protoc-reporter t))
 (add-hook 'protobuf-mode-hook 'memes-protobuf-mode-hook)
 
@@ -286,6 +296,9 @@
 (add-to-list 'memes-packages 'ng2-mode)
 (add-hook 'ng2-mode-hook 'memes-tide-mode-hook)
 (defun memes-ng2-html-mode-hook ()
-  "Hook for ng2 HTML mode"
+  "Hook for ng2 HTML mode."
   (auto-fill-mode 0))
 (add-hook 'ng2-html-mode-hook 'memes-ng2-html-mode-hook)
+
+(provide 'coding-config)
+;;; coding-config.el ends here

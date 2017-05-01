@@ -1,5 +1,10 @@
-;; Settings common to all hosts to be executed last
-;; $Id: 98common.el 1 2007-10-18 23:15:33Z memes $
+;;; 99common.el --- Common settings (late)
+
+;;; Commentary:
+
+;;; Code:
+
+(defvar memes-packages)
 
 ;; Use yasnippet
 (add-to-list 'memes-packages 'yasnippet)
@@ -9,8 +14,8 @@
 ;; Enable company-mode if present
 (add-to-list 'memes-packages 'company)
 (with-eval-after-load "company"
-  (setq company-tooltip-align-annotations t
-	company-auto-complete t))
+  (setq-default company-tooltip-align-annotations t
+		company-auto-complete t))
 (add-hook 'memes-after-load-packages-hook 'global-company-mode)
 
 ;; Allow exec-path to inherit from shell
@@ -20,3 +25,6 @@
 
 ;; Disable backtrace on error
 (setq debug-on-error nil)
+
+(provide '99common)
+;;; 99common.el ends here

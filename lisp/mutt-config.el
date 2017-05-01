@@ -1,5 +1,10 @@
-;; Configuration options for mutt integration
-;; $Id: mutt-config.el 6 2008-06-09 15:59:57Z memes $
+;;; mutt-config.el --- configuration when using Mutt
+
+;;; Commentary:
+
+;;; Code:
+
+(defvar memes-hostname)
 
 ;; Prefer OS package for mutt and post modes; only enable if found
 (cond ((fboundp 'muttrc-mode)
@@ -25,6 +30,7 @@
 
 ;; Hook to setup post mode buffer
 (defun memes-post-mode-hook ()
+  "Hook for post-mode."
   (turn-on-auto-fill)
   (turn-on-font-lock)
   (set-buffer-modified-p nil)
@@ -38,5 +44,7 @@
 	     ;; Recognise mutt temp file as a post-mode candidate
 	     (cons (cons (concat "mutt-" memes-hostname "-[0-9]+-[0-9]+") 'post-mode)
 		   auto-mode-alist))
-       (setq post-should-prompt-for-attachment 'Never)))
+       (setq-default post-should-prompt-for-attachment 'Never)))
 
+(provide 'mutt-config)
+;;; mutt-config.el ends here

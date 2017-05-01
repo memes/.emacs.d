@@ -1,20 +1,33 @@
-;; MEmes emacs setup file, culled from various sources.
-;; $Id: dotemacs 7 2008-06-27 15:21:24Z memes $
+;;; init.el --- initialise Emacs
+
+;;; Commentary:
+
+;;; Code:
+
+(defvar memes-hostname
+  (substring (system-name) 0
+	     (string-match "\\..+" (system-name)))
+  "Contains the name of this system; used for buffer identification, etc.
+Defaults to short hostname.")
 
 ;; Latest customisations require Emacs24; not supporting anything less than that
 (let ((min_supported 24))
   (unless (>= emacs-major-version min_supported)
     (error "Emacs %d or later is required for this configuration" min_supported)))
 
+(defvar memes-lisp
+  (locate-user-emacs-file "lisp")
+  "Path to local elisp files and configurations.")
+
 ;; (Re-)compile lisp files as necessary
-(byte-recompile-directory (convert-standard-filename (expand-file-name "lisp" user-emacs-directory)) 0)
+(byte-recompile-directory memes-lisp 0)
 
 ;; Add MEmes lisp files to load path
-(add-to-list 'load-path (convert-standard-filename (expand-file-name "lisp/" user-emacs-directory)))
+(add-to-list 'load-path memes-lisp)
 
 ;; Don't break when loading configuration files
 (defun memes-load-config (config-file)
-  "Load a supplied configuration file, don't fuss if unavailable"
+  "Load supplied CONFIG-FILE without throwing an error if it is unavailable."
   (if (load config-file t)
       (message (concat "Loaded " config-file))
     (message (concat "Unable to load " config-file ", ignoring"))))
@@ -30,7 +43,7 @@
    "sql-config"
    "markup-config"
    )
-  "List of configuration files to load that can be changed by host config")
+  "List of configuration files to load that can be changed by host config.")
 
 ;; Load common settings
 (memes-load-config "00common")
@@ -47,3 +60,6 @@
   
 ;; Load common final settings
 (memes-load-config "99common")
+
+(provide 'init)
+;;; init.el ends here

@@ -1,5 +1,11 @@
-;; Various SQL options
-;; $Id: sql-config.el 1 2007-10-18 23:15:33Z memes $
+;;; sql-config.el --- configure SQL modes
+
+;;; Commentary:
+
+;;; Code:
 
 ;; Oracle SQL stuff
 (autoload 'sql-oracle "sql" "Interactive SQL mode." t)
+
+(provide 'sql-config)
+;;; sql-config.el ends here
