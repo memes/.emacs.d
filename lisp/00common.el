@@ -141,7 +141,7 @@
 
 (defvar memes-package-archives '(("melpa" . "https://melpa.org/packages/"))
   "List of package archive definitions to add to system.
-Defaults to MELPA stable packages.")
+Defaults to MELPA packages.")
 
 (defvar memes-after-load-packages-hook nil
   "Hook that will be called after loading MELPA packages.")
