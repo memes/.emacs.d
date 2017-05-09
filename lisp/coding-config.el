@@ -145,6 +145,7 @@
 (add-to-list 'memes-packages 'go-errcheck)
 (add-to-list 'memes-packages 'go-rename)
 (add-to-list 'memes-packages 'go-guru)
+(add-to-list 'memes-packages 'company-go)
 (defconst memes-goroot
   (convert-standard-filename (expand-file-name
 			      (cond ((memq window-system '(w32 win32)) "~/go")
@@ -168,14 +169,14 @@
 	(format "cd %s && gb build && gb test -v=1 && go tool vet %s/src" gb-project-path gb-project-path)
       (let ((go-project-path (or (directory-file-name (file-name-directory (memes-find-parent "src" buffer-file-name)))
 				 (directory-file-name (file-name-directory buffer-file-name)))))
-	(format "cd %s && go build -v ./... && go test -v=1 && go tool vet ." go-project-path)))))
+	(format "cd %s && go test -v $(go list ./... | grep -v /vendor/) && go install $(go list ./... | grep -v /vendor/)" go-project-path)))))
 (defun memes-go-mode-hook ()
   "Hook to be executed in all go buffers."
   (require 'exec-path-from-shell)
-  (require 'go-autocomplete (convert-standard-filename (concat memes-goroot "/src/github.com/nsf/gocode/emacs/go-autocomplete.el")))
-  ;;(require 'go-oracle (convert-standard-filename (concat memes-goroot "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
   (setq-default gofmt-command "goimports")
   (go-eldoc-setup)
+  (set (make-local-variable 'company-backends) '(company-go))
+  (company-mode +1)
   (make-local-variable 'process-environment)
   (setenv "GOPATH"
 	  (mapconcat 'identity
@@ -194,6 +195,8 @@
 ;; Javascript support
 (add-to-list 'memes-packages 'js2-mode)
 (add-to-list 'memes-packages 'ac-js2)
+(with-eval-after-load 'ac-js2
+  (add-to-list 'company-backends 'ac-js2-company))
 (defun memes-js-mode-hook ()
   "Hook to be executed for js modes."
   (js2-minor-mode)
