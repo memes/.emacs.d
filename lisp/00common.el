@@ -151,7 +151,7 @@ Defaults to MELPA packages.")
   "Load any packages defined in memes-packages in a hook"
   (when (fboundp 'package-initialize)
     (package-initialize)
-    (setq package-archives (append memes-package-archives package-archives))
+    (setq package-archives memes-package-archives)
     (package-refresh-contents)
     (dolist (memes-package memes-packages)
       (unless (package-installed-p memes-package)
