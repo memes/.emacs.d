@@ -120,10 +120,10 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (add-to-list 'auto-mode-alist '("\\.\\(html?\\|php\\|jsp\\|aspx?\\|cshtml\\|[jt]sx\\|vtl\\)\\'" . web-mode))
 (defun memes-web-mode-hook ()
   "Prepare web-mode for use."
-  (setq-default web-mode-markup-indent-offset 2
+  (setq web-mode-markup-indent-offset 2
 		web-mode-css-indent-offset 2
 		web-mode-code-indent-offset 2
-	indent-tabs-mode nil)
+                indent-tabs-mode nil)
   (set (make-local-variable 'company-backends) '(company-web-html company-files))
   ;; Enable tide in tsx and jsx files
   (when (string-match "[jt]sx" (file-name-extension buffer-file-name))
