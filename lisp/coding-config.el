@@ -303,5 +303,17 @@
   (auto-fill-mode 0))
 (add-hook 'ng2-html-mode-hook 'memes-ng2-html-mode-hook)
 
+;; elixir
+(add-to-list 'memes-packages 'elixir-mode)
+(add-to-list 'memes-packages 'alchemist)
+(add-to-list 'memes-packages 'ruby-end)
+(defun memes-elixir-mode-hook ()
+  "Elixir mode hook."
+  (alchemist-mode)
+  (company-mode +1)
+  (ruby-end-mode))
+(with-eval-after-load 'elixir-mode
+  (add-hook 'elixir-mode-hook 'memes-elixir-mode-hook))
+
 (provide 'coding-config)
 ;;; coding-config.el ends here
