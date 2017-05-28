@@ -146,6 +146,7 @@
 (add-to-list 'memes-packages 'go-rename)
 (add-to-list 'memes-packages 'go-guru)
 (add-to-list 'memes-packages 'company-go)
+(add-to-list 'memes-packages 'go-dlv)
 (defconst memes-goroot
   (convert-standard-filename (expand-file-name
 			      (cond ((memq window-system '(w32 win32)) "~/go")
