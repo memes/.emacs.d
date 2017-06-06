@@ -272,9 +272,11 @@
 
 ;; C# mode
 (add-to-list 'memes-packages 'csharp-mode)
+(add-to-list 'memes-packages 'omnisharp)
 (defun memes-csharp-mode-hook ()
   "C# mode hook."
-  (electric-pair-mode 1))
+  (electric-pair-mode 1)
+  (omnisharp-mode))
 (add-hook 'csharp-mode-hook 'memes-csharp-mode-hook)
 (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
 (setq auto-mode-alist (append '(("\\.cs$" . csharp-mode)) auto-mode-alist))
