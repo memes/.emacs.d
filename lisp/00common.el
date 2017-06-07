@@ -80,7 +80,9 @@
       ((memq window-system '(ns mac))
        (setq focus-follows-mouse nil))
       (t
-       (setq focus-follows-mouse t)))
+       (setq focus-follows-mouse t
+	     browse-url-browser-function 'browse-url-generic
+	     browse-url-generic-program "x-www-browser")))
 
 ;; Configure Emacs to use Bash as the shell
 (setq-default shell-file-name "bash")
