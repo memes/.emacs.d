@@ -141,7 +141,11 @@
 (defvar memes-packages ()
   "List of packages to be installed in 'after-init-hook'.")
 
-(defvar memes-package-archives '(("melpa" . "https://melpa.org/packages/") ("gnu" . "https://elpa.gnu.org/packages/"))
+(defvar memes-package-archives
+  (cond ((memq window-system '(win32 w32))
+	 '(("melpa" . "http://melpa.org/packages/") ("gnu" . "http://elpa.gnu.org/packages/")))
+	(t
+	 '(("melpa" . "https://melpa.org/packages/") ("gnu" . "https://elpa.gnu.org/packages/"))))
   "List of package archive definitions to add to system.
 Defaults to MELPA packages.")
 
