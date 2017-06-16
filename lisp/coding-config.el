@@ -170,7 +170,7 @@
 	(format "cd %s && gb build && gb test -v=1 && go tool vet %s/src" gb-project-path gb-project-path)
       (let ((go-project-path (or (directory-file-name (file-name-directory (memes-find-parent "src" buffer-file-name)))
 				 (directory-file-name (file-name-directory buffer-file-name)))))
-	(format "cd %s && go test -v $(go list ./... | grep -v /vendor/) && go install $(go list ./... | grep -v /vendor/)" go-project-path)))))
+	(format "cd %s && go test -v $(go list ./... | grep -v /vendor/ | grep -v '^_') && go install $(go list ./... | grep -v /vendor/ | grep -v '^_')" go-project-path)))))
 (defun memes-go-mode-hook ()
   "Hook to be executed in all go buffers."
   (require 'exec-path-from-shell)
