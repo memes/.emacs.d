@@ -4,16 +4,20 @@
 
 ;;; Code:
 
+;; Latest customisations require Emacs24; not supporting anything less than that
+(let ((min_supported 24))
+  (unless (>= emacs-major-version min_supported)
+    (error "Emacs %d or later is required for this configuration" min_supported)))
+
+;; Keep package.el happy, but perform the initialization
+;; after checking emacs version.
+(package-initialize)
+
 (defvar memes-hostname
   (substring (system-name) 0
 	     (string-match "\\..+" (system-name)))
   "Contains the name of this system; used for buffer identification, etc.
 Defaults to short hostname.")
-
-;; Latest customisations require Emacs24; not supporting anything less than that
-(let ((min_supported 24))
-  (unless (>= emacs-major-version min_supported)
-    (error "Emacs %d or later is required for this configuration" min_supported)))
 
 (defvar memes-lisp
   (locate-user-emacs-file "lisp")
