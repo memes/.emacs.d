@@ -318,5 +318,20 @@
 (with-eval-after-load 'elixir-mode
   (add-hook 'elixir-mode-hook 'memes-elixir-mode-hook))
 
+;; Doing java again, this time with eclim
+(add-to-list 'memes-packages 'eclim)
+(add-to-list 'memes-packages 'company-emacs-eclim)
+(add-to-list 'memes-packages 'gradle-mode)
+(with-eval-after-load 'eclim
+  (message "foo")
+  (setq-default eclim-executable "~/eclipse/eclim"
+                eclimd-autostart t)
+  (company-emacs-eclim-setup))
+(defun memes-java-mode-hook ()
+  "Java mode hook."
+  (eclim-mode t)
+  (gradle-mode t))
+(add-hook 'java-mode-hook 'memes-java-mode-hook)
+
 (provide 'coding-config)
 ;;; coding-config.el ends here
