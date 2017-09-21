@@ -149,7 +149,7 @@
 (add-to-list 'memes-packages 'go-dlv)
 (defconst memes-goroot
   (convert-standard-filename (expand-file-name
-			      (cond ((memq window-system '(w32 win32)) "~/go")
+			      (cond ((memq window-system '(w32 win32)) "~/lib/go")
 				    ((memq window-system '(ns mac)) "~/Library/go")
 				    (t "~/lib/go"))))
   "Local GOROOT customisations based on OS.")
@@ -323,7 +323,6 @@
 (add-to-list 'memes-packages 'company-emacs-eclim)
 (add-to-list 'memes-packages 'gradle-mode)
 (with-eval-after-load 'eclim
-  (message "foo")
   (setq-default eclim-executable "~/eclipse/eclim"
                 eclimd-autostart t)
   (company-emacs-eclim-setup))

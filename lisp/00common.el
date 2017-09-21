@@ -15,8 +15,8 @@
       ring-bell-function nil
       visible-bell t
       next-line-add-newlines nil
-      require-final-newline nil
-      )
+      require-final-newline nil)
+(prefer-coding-system 'utf-8)
 (setq-default major-mode 'text-mode)
 
 ;; Allow delete/replace on selected text and highlight selected text
@@ -76,19 +76,33 @@
 
 ;; Handle OS specific setup
 (cond ((memq window-system '(win32 w32))
-       (setq focus-follows-mouse nil))
+       (setq focus-follows-mouse nil
+	     shell-file-name "C:/Windows/System32/bash.exe"
+	     explicit-shell-file-name "C:/Windows/System32/bash.exe"
+	     explicit-bash.exe-args '("--login" "-i")
+	     shell-command-switch "-c"
+	     process-coding-system-alist (cons '("bash.exe" . (undecided-dos . undecided-unix))
+					       process-coding-system-alist)))
       ((memq window-system '(ns mac))
-       (setq focus-follows-mouse nil))
+       (setq focus-follows-mouse nil
+	     shell-file-name "bash"
+	     explicit-shell-file-name "bash"
+	     shell-command-switch "-c"
+	     process-coding-system-alist (cons '("bash" . raw-text-unix)
+					       process-coding-system-alist))
+       (setenv "SHELL" shell-file-name))
       (t
        (setq focus-follows-mouse t
 	     browse-url-browser-function 'browse-url-generic
-	     browse-url-generic-program "x-www-browser")))
+	     browse-url-generic-program "x-www-browser"
+	     shell-file-name "bash"
+	     explicit-shell-file-name "bash"
+	     shell-command-switch "-c"
+	     process-coding-system-alist (cons '("bash" . raw-text-unix)
+					       process-coding-system-alist))
+       (setenv "SHELL" shell-file-name)))
 
-;; Configure Emacs to use Bash as the shell
-(setq-default shell-file-name "bash")
-(setq-default explicit-shell-file-name shell-file-name)
-(setq-default shell-command-switch "-c")
-(setenv "SHELL" shell-file-name)
+;; Setup shell
 (require 'comint)
 (make-variable-buffer-local 'comint-completion-addsuffix)
 (defun memes-shell-setup()
@@ -100,12 +114,6 @@
   (if (memq window-system '(win32 w32))
       (setq-default w32-quote-process-args ?\")))
 (add-hook 'shell-mode-hook 'memes-shell-setup)
-(cond ((memq window-system '(win32 w32))
-       (setq process-coding-system-alist (cons '("bash" . (undecided-dos . undecided-unix))
-					       process-coding-system-alist)))
-      (t
-       (setq process-coding-system-alist (cons '("bash" . raw-text-unix)
-					       process-coding-system-alist))))
 
 ;; Quickly revert a file, bound to Alt-r
 (defun revert-buffer-noconfirm ()
@@ -142,10 +150,7 @@
   "List of packages to be installed in 'after-init-hook'.")
 
 (defvar memes-package-archives
-  (cond ((memq window-system '(win32 w32))
-	 '(("melpa" . "http://melpa.org/packages/") ("gnu" . "http://elpa.gnu.org/packages/")))
-	(t
-	 '(("melpa" . "https://melpa.org/packages/") ("gnu" . "https://elpa.gnu.org/packages/"))))
+  '(("melpa" . "https://melpa.org/packages/") ("gnu" . "https://elpa.gnu.org/packages/"))
   "List of package archive definitions to add to system.
 Defaults to MELPA packages.")
 
