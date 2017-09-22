@@ -140,7 +140,6 @@
 
 ;; Go language support
 (add-to-list 'memes-packages 'go-mode)
-(add-to-list 'memes-packages 'exec-path-from-shell)
 (add-to-list 'memes-packages 'go-eldoc)
 (add-to-list 'memes-packages 'go-errcheck)
 (add-to-list 'memes-packages 'go-rename)
@@ -173,7 +172,6 @@
 	(format "cd %s && go test -v $(go list ./... | grep -v /vendor/ | grep -v '^_') && go install $(go list ./... | grep -v /vendor/ | grep -v '^_')" go-project-path)))))
 (defun memes-go-mode-hook ()
   "Hook to be executed in all go buffers."
-  (require 'exec-path-from-shell)
   (setq-default gofmt-command "goimports")
   (go-eldoc-setup)
   (set (make-local-variable 'company-backends) '(company-go))

@@ -75,6 +75,9 @@
 (cd "~")
 
 ;; Handle OS specific setup
+(defun memes-exec-path-from-shell ()
+  "Requires exec-path-from-shell."
+  (require exec-path-from-shell))
 (cond ((memq window-system '(win32 w32))
        (setq focus-follows-mouse nil
 	     shell-file-name "C:/Windows/System32/bash.exe"
@@ -84,6 +87,8 @@
 	     process-coding-system-alist (cons '("bash.exe" . (undecided-dos . undecided-unix))
 					       process-coding-system-alist)))
       ((memq window-system '(ns mac))
+       (add-to-list 'memes-packages 'exec-path-from-shell)
+       (add-hook 'memes-after-load-packages-hook 'memes-exec-path-from-shell)
        (setq focus-follows-mouse nil
 	     shell-file-name "bash"
 	     explicit-shell-file-name "bash"
@@ -92,6 +97,8 @@
 					       process-coding-system-alist))
        (setenv "SHELL" shell-file-name))
       (t
+       (add-to-list 'memes-packages 'exec-path-from-shell)
+       (add-hook 'memes-after-load-packages-hook 'memes-exec-path-from-shell)
        (setq focus-follows-mouse t
 	     browse-url-browser-function 'browse-url-generic
 	     browse-url-generic-program "x-www-browser"
