@@ -52,6 +52,7 @@
 (global-set-key "\C-xc" 'compile)
 
 ;; C-mode hook common to all sub-modes
+(add-to-list 'memes-packages 'ggtags)
 (defun memes-c-mode-common-hook ()
   "Hook common to all 'c-mode' derived modes."
   (setq-default c-basic-offset 4)
@@ -60,7 +61,8 @@
   (c-set-offset 'case-label '+)
   (setq-default tab-width 4 indent-tabs-mode nil)
   (turn-on-auto-fill)
-  (flyspell-prog-mode))
+  (flyspell-prog-mode)
+  (ggtags-mode 1))
 (add-hook 'c-mode-common-hook 'memes-c-mode-common-hook)
 
 ;; Define a set of path/c-style option pairs
@@ -146,6 +148,7 @@
 (add-to-list 'memes-packages 'go-guru)
 (add-to-list 'memes-packages 'company-go)
 (add-to-list 'memes-packages 'go-dlv)
+(add-to-list 'memes-packages 'go-add-tags)
 (defconst memes-goroot
   (convert-standard-filename (expand-file-name
 			      (cond ((memq window-system '(w32 win32)) "~/lib/go")
@@ -172,10 +175,12 @@
 	(format "cd %s && go test -v $(go list ./... | grep -v /vendor/ | grep -v '^_') && go install $(go list ./... | grep -v /vendor/ | grep -v '^_')" go-project-path)))))
 (defun memes-go-mode-hook ()
   "Hook to be executed in all go buffers."
-  (setq-default gofmt-command "goimports")
+  (setq-default gofmt-command "goimports"
+		go-add-tags-style 'lower-camel-case)
   (go-eldoc-setup)
   (set (make-local-variable 'company-backends) '(company-go))
   (company-mode +1)
+  (ggtags-mode +1)
   (make-local-variable 'process-environment)
   (setenv "GOPATH"
 	  (mapconcat 'identity
@@ -185,6 +190,7 @@
   (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)
   (local-set-key (kbd "C-c i") 'go-goto-imports)
   (local-set-key (kbd "C-c r") 'go-rename)
+  (local-set-key (kbd "C-c t") 'go-add-tags)
   (add-hook 'before-save-hook 'gofmt-before-save)
   (set (make-local-variable 'compile-command) (memes-go-compile))
   (go-guru-hl-identifier-mode)
