@@ -46,6 +46,7 @@ Defaults to short hostname.")
    "coding-config"
    "sql-config"
    "markup-config"
+   "irc-config"
    )
   "List of configuration files to load that can be changed by host config.")
 
