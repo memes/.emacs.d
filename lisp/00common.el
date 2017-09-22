@@ -74,10 +74,36 @@
 ;; Start in home dir
 (cd "~")
 
+;; Package management - allows list of packages to be added in other cornfig
+;; files
+(defvar memes-packages ()
+  "List of packages to be installed in 'after-init-hook'.")
+
+(defvar memes-package-archives
+  '(("melpa" . "https://melpa.org/packages/") ("gnu" . "https://elpa.gnu.org/packages/"))
+  "List of package archive definitions to add to system.
+Defaults to MELPA packages.")
+
+(defvar memes-after-load-packages-hook nil
+  "Hook that will be called after loading MELPA packages.")
+
+(require 'package)
+(defun memes-load-packages()
+  "Load any packages defined in memes-packages in a hook"
+  (when (fboundp 'package-initialize)
+    (package-initialize)
+    (setq package-archives memes-package-archives)
+    (package-refresh-contents)
+    (dolist (memes-package memes-packages)
+      (unless (package-installed-p memes-package)
+	(package-install memes-package)))
+    (run-hooks 'memes-after-load-packages-hook)))
+(add-hook 'after-init-hook 'memes-load-packages)
+
 ;; Handle OS specific setup
 (defun memes-exec-path-from-shell ()
   "Requires exec-path-from-shell."
-  (require exec-path-from-shell))
+  (require 'exec-path-from-shell))
 (cond ((memq window-system '(win32 w32))
        (setq focus-follows-mouse nil
 	     shell-file-name "C:/Windows/System32/bash.exe"
@@ -150,32 +176,6 @@
 (autoload 'whitespace-mode "whitespace" "Toggle whitespace visualisation" t)
 (setq-default whitespace-style '(face empty tabs lines-tail trailing))
 (global-set-key (kbd "C-x SPC") 'whitespace-mode)
-
-;; Package management - allows list of packages to be added in other config
-;; files
-(defvar memes-packages ()
-  "List of packages to be installed in 'after-init-hook'.")
-
-(defvar memes-package-archives
-  '(("melpa" . "https://melpa.org/packages/") ("gnu" . "https://elpa.gnu.org/packages/"))
-  "List of package archive definitions to add to system.
-Defaults to MELPA packages.")
-
-(defvar memes-after-load-packages-hook nil
-  "Hook that will be called after loading MELPA packages.")
-
-(require 'package)
-(defun memes-load-packages()
-  "Load any packages defined in memes-packages in a hook"
-  (when (fboundp 'package-initialize)
-    (package-initialize)
-    (setq package-archives memes-package-archives)
-    (package-refresh-contents)
-    (dolist (memes-package memes-packages)
-      (unless (package-installed-p memes-package)
-	(package-install memes-package)))
-    (run-hooks 'memes-after-load-packages-hook)))
-(add-hook 'after-init-hook 'memes-load-packages)
 
 (require 'subr-x)
 ;; Utility to find a named parent directory
