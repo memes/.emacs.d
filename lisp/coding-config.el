@@ -149,6 +149,7 @@
 (add-to-list 'memes-packages 'company-go)
 (add-to-list 'memes-packages 'go-dlv)
 (add-to-list 'memes-packages 'go-add-tags)
+(add-to-list 'memes-packages 'flycheck-gometalinter)
 (defconst memes-goroot
   (convert-standard-filename (expand-file-name
 			      (cond ((memq window-system '(w32 win32)) "~/lib/go")
@@ -176,7 +177,9 @@
 (defun memes-go-mode-hook ()
   "Hook to be executed in all go buffers."
   (setq-default gofmt-command "goimports"
-		go-add-tags-style 'lower-camel-case)
+		go-add-tags-style 'lower-camel-case
+		flycheck-gometalinter-vendor t)
+  (flycheck-gometalinter-setup)
   (go-eldoc-setup)
   (set (make-local-variable 'company-backends) '(company-go))
   (company-mode +1)
