@@ -26,8 +26,14 @@
 ;; Dictionary configuration
 (require 'ispell)
 (require 'flyspell)
-(setq ispell-program-name "aspell"
-      ispell-skip-html t
+(cond
+ ((executable-find "aspell")
+  (setq ispell-program-name "aspell"))
+ ((executable-find "hunspell")
+  (setq ispell-program-name "hunspell"))
+ (t
+  (setq ispell-program-name nil)))
+(setq ispell-skip-html t
       ispell-local-dictionary "british"
       flyspell-use-meta-tab nil
       flyspell-abbrev-p nil
