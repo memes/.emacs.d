@@ -47,7 +47,7 @@
       lui-time-stamp-position 'left-margin
       lui-time-stamp-format "%H:%M"
       lui-flyspell-p t
-      lui-flyspell-alist '((".*" "british")))
+      lui-flyspell-alist '((".*" "en_GB")))
 (add-hook 'circe-channel-mode-hook 'enable-lui-autopaste)
 
 (defun memes-circe-network-connected-p (network)

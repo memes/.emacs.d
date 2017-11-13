@@ -19,6 +19,10 @@
 (prefer-coding-system 'utf-8)
 (setq-default major-mode 'text-mode)
 
+;; On Mac, make sure homebrew path is used for finding executables
+(when (memq window-system '(ns mac))
+  (setq exec-path (append exec-path '("/usr/local/bin"))))
+
 ;; Allow delete/replace on selected text and highlight selected text
 (delete-selection-mode t)
 (transient-mark-mode t)
@@ -34,7 +38,7 @@
  (t
   (setq ispell-program-name nil)))
 (setq ispell-skip-html t
-      ispell-local-dictionary "british"
+      ispell-local-dictionary "en_GB"
       flyspell-use-meta-tab nil
       flyspell-abbrev-p nil
       flyspell-sort-corrections nil)
@@ -106,7 +110,7 @@ Defaults to MELPA packages.")
     (run-hooks 'memes-after-load-packages-hook)))
 (add-hook 'after-init-hook 'memes-load-packages)
 
-;; Handle OS specific setup
+;; Handle OS specific shell setup
 (defun memes-exec-path-from-shell ()
   "Requires exec-path-from-shell."
   (require 'exec-path-from-shell))
