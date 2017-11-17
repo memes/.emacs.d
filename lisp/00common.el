@@ -20,7 +20,7 @@
 (setq-default major-mode 'text-mode)
 
 ;; On Mac, make sure homebrew path is used for finding executables
-(when (memq window-system '(ns mac))
+(when (string-equal system-type "darwin")
   (setq exec-path (append exec-path '("/usr/local/bin"))))
 
 ;; Allow delete/replace on selected text and highlight selected text
@@ -114,7 +114,7 @@ Defaults to MELPA packages.")
 (defun memes-exec-path-from-shell ()
   "Requires exec-path-from-shell."
   (require 'exec-path-from-shell))
-(cond ((memq window-system '(win32 w32))
+(cond ((string-equal system-type "windows-nt")
        (setq focus-follows-mouse nil
 	     shell-file-name "C:/Windows/System32/bash.exe"
 	     explicit-shell-file-name "C:/Windows/System32/bash.exe"
@@ -122,7 +122,7 @@ Defaults to MELPA packages.")
 	     shell-command-switch "-c"
 	     process-coding-system-alist (cons '("bash.exe" . (undecided-dos . undecided-unix))
 					       process-coding-system-alist)))
-      ((memq window-system '(ns mac))
+      ((string-equal system-type "darwin")
        (add-to-list 'memes-packages 'exec-path-from-shell)
        (add-hook 'memes-after-load-packages-hook 'memes-exec-path-from-shell)
        (setq focus-follows-mouse nil
@@ -154,7 +154,7 @@ Defaults to MELPA packages.")
 	comint-completion-addsuffix t
 	comint-process-echoes nil
 	comint-eol-on-send t)
-  (if (memq window-system '(win32 w32))
+  (if (string-equal system-type "windows-nt")
       (setq-default w32-quote-process-args ?\")))
 (add-hook 'shell-mode-hook 'memes-shell-setup)
 

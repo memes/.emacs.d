@@ -152,8 +152,8 @@
 (add-to-list 'memes-packages 'flycheck-gometalinter)
 (defconst memes-goroot
   (convert-standard-filename (expand-file-name
-			      (cond ((memq window-system '(w32 win32)) "~/lib/go")
-				    ((memq window-system '(ns mac)) "~/Library/go")
+			      (cond ((string-equal system-type "windows-nt") "~/lib/go")
+				    ((string-equal system-type "darwin") "~/Library/go")
 				    (t "~/lib/go"))))
   "Local GOROOT customisations based on OS.")
 (defun memes-gb-project-path (filename)
@@ -294,7 +294,7 @@
   "Swift mode hook."
   (add-to-list 'flycheck-checkers 'swift)
   (setq flycheck-swift-target nil
-	swift-repl-executable (cond ((memq window-system '(ns mac)) "xcrun swift")
+	swift-repl-executable (cond ((string-equal system-type "darwin") "xcrun swift")
 				    (t "swift"))))
 (add-hook 'swift-mode-hook 'memes-swift-mode-hook)
 
