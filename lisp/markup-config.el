@@ -112,7 +112,7 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (add-to-list 'memes-packages 'pandoc-mode)
 (add-hook 'markdown-mode-hook 'pandoc-mode)
 (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
-(setq-default markdown-command "pandoc --smart -f markdown -t html")
+(setq-default markdown-command "pandoc -f markdown -t html+smart")
 
 ;; Add web-mode
 (add-to-list 'memes-packages 'web-mode)
