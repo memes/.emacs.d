@@ -339,5 +339,24 @@
   (gradle-mode t))
 (add-hook 'java-mode-hook 'memes-java-mode-hook)
 
+;; Make python support better
+(add-to-list 'memes-packages 'elpy)
+(add-to-list 'memes-packages 'py-autopep8)
+(with-eval-after-load 'elpy
+  (cond
+   ((executable-find "python3")
+    (setq elpy-rpc-python-command "python3"))
+   ((executable-find "python2")
+    (setq elpy-rpc-python-command "python2"))
+   (t
+    ()))
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules)))
+(elpy-enable)
+(defun memes-python-mode-hook ()
+  "Python mode hook."
+  (flycheck-mode +1)
+  (py-autopep8-enable-on-save))
+(add-hook 'elpy-mode-hook 'memes-python-mode-hook)
+
 (provide 'coding-config)
 ;;; coding-config.el ends here
