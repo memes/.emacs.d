@@ -358,5 +358,14 @@
   (py-autopep8-enable-on-save))
 (add-hook 'elpy-mode-hook 'memes-python-mode-hook)
 
+;; Dart support
+(add-to-list 'memes-packages 'dart-mode)
+(setq-default dart-enable-analysis-server t
+              dart-format-on-save t)
+(defun memes-dart-mode-hook ()
+  "Dart mode hook."
+  (flycheck-mode +1))
+(add-hook 'dart-mode-hook 'memes-dart-mode-hook)
+
 (provide 'coding-config)
 ;;; coding-config.el ends here
