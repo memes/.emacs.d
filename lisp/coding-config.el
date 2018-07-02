@@ -367,5 +367,14 @@
   (flycheck-mode +1))
 (add-hook 'dart-mode-hook 'memes-dart-mode-hook)
 
+;; Using terraform again
+(add-to-list 'memes-packages 'terraform-mode)
+(add-to-list 'memes-packages 'company-terraform)
+(defun memes-terraform-mode-hook ()
+  "Terraform mode hook."
+  (company-terraform-init))
+(add-hook 'terraform-mode-hook 'memes-terraform-mode-hook)
+(add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
+  
 (provide 'coding-config)
 ;;; coding-config.el ends here

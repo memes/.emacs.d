@@ -17,6 +17,8 @@
   (setq-default company-tooltip-align-annotations t
 		company-auto-complete t))
 (add-hook 'memes-after-load-packages-hook 'global-company-mode)
+(add-to-list 'memes-packages 'company-quickhelp)
+(add-hook 'memes-after-load-packages-hook 'company-quickhelp-mode)
 
 ;; Allow exec-path to inherit from shell
 (add-to-list 'memes-packages 'exec-path-from-shell)
