@@ -217,12 +217,10 @@ Defaults to MELPA packages.")
 (windmove-default-keybindings 'meta)
 
 ;; Use framemove to extend windmove to frames
-(add-to-list 'memes-packages 'framemove)
-(defun memes-init-framemove ()
-  "Initialise framemove after packages have been loaded."
-  (require 'framemove)
-  (setq-default framemove-hook-into-windmove t))
-(add-hook 'memes-after-load-packages-hook 'memes-init-framemove)
+;; Note: as of September 2017, most EmacsWiki packages have been removed from 
+;; elpa, so use a local copy.
+(require 'framemove)
+(setq-default framemove-hook-into-windmove t)
 
 ;; Magit - why not
 (add-to-list 'memes-packages 'magit)
