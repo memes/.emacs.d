@@ -342,20 +342,13 @@
 ;; Make python support better
 (add-to-list 'memes-packages 'elpy)
 (add-to-list 'memes-packages 'py-autopep8)
-(with-eval-after-load 'elpy
-  (cond
-   ((executable-find "python3")
-    (setq elpy-rpc-python-command "python3"))
-   ((executable-find "python2")
-    (setq elpy-rpc-python-command "python2"))
-   (t
-    ()))
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules)))
-(elpy-enable)
+(add-to-list 'memes-packages 'virtualenvwrapper)
+(add-hook 'memes-after-load-packages-hook #'elpy-enable)
 (defun memes-python-mode-hook ()
   "Python mode hook."
   (flycheck-mode +1)
-  (py-autopep8-enable-on-save))
+  (py-autopep8-enable-on-save)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules)))
 (add-hook 'elpy-mode-hook 'memes-python-mode-hook)
 
 ;; Dart support
