@@ -123,7 +123,8 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
   (setq web-mode-markup-indent-offset 2
 		web-mode-css-indent-offset 2
 		web-mode-code-indent-offset 2
-                indent-tabs-mode nil)
+                indent-tabs-mode nil
+		web-mode-enable-engine-detection t)
   (set (make-local-variable 'company-backends) '(company-web-html company-files))
   ;; Enable tide in tsx and jsx files
   (when (string-match "[jt]sx" (file-name-extension buffer-file-name))
@@ -141,10 +142,12 @@ This is 0.3 red + 0.59 green + 0.11 blue and always between 0 and 255."
 (with-eval-after-load "less-css-mode"
   (setq less-css-compile-at-save nil))
 
-;; YAML mode
+;; YAML mode, with ansible completion
 (add-to-list 'memes-packages 'yaml-mode)
+(add-to-list 'memes-packages 'company-ansible)
 (defun memes-yaml-mode-hook ()
   "Configure YAML mode."
+  (add-to-list 'company-backends 'company-ansible)
   (define-key yaml-mode-map "\C-m" 'newline-and-indent))
 (add-hook 'yaml-mode-hook 'memes-yaml-mode-hook)
 (add-to-list 'auto-mode-alist '("\\.raml\\'" . yaml-mode))
