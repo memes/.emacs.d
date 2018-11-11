@@ -8,7 +8,15 @@
 # Ignore auto-generated files and folders
 *.elc
 elpa/
+eshell/
 auto-save-list/
 recentf
 ac-comphist.dat
 emojis
+var/
+projectile-bookmarks.eld
+
+# LSP for Java uses an eclipse package
+lib/eclipse.jdt.ls
+# Ignore the customisation file
+custom.el

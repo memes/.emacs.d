@@ -1,4 +1,0 @@
-  -- Catalog data for misc dtd's                                            --
-  -- Created 01/04/13 MEmes                                                 --
-  -- $Id: $                                                                 --
-SYSTEM "http://xml.evernote.com/pub/enml2.dtd" "enml2.dtd"

@@ -1,7 +1,0 @@
-  -- Catalog data for Struts dtd's                                          --
-  -- Created 01/08/03 MEmes                                                 --
-  -- $Id: struts.cat 1 2007-10-18 23:15:33Z memes $                         --
-PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.0//EN" "struts-config_1_0.dtd"
-PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "struts-config_1_1.dtd"
-PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration//EN" "tiles-config.dtd"
-PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd"

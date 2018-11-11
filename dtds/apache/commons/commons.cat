@@ -1,4 +1,0 @@
-  -- Catalog data for commons dtd's                    --
-  -- $Id: commons.cat 1 2007-10-18 23:15:33Z memes $   --
-PUBLIC "-//Apache Software Foundation//DTD Model MBeans Configuration File" "mbeans-descriptors.dtd"
-PUBLIC "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN" "validator_1_0.dtd"

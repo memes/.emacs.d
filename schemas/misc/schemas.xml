@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-  List of miscellaneous schemas generated from DTDs using trang
-  $Id: $
--->
-<locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
-  <documentElement localName="en-note" uri="enml2.rnc"/>
-</locatingRules>

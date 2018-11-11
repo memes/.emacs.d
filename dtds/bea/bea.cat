@@ -1,7 +1,0 @@
-  -- Catalog data for BEA DTDs
-  -- Created 12/05/05 MEmes
-  -- $Id: bea.cat 1 2007-10-18 23:15:33Z memes $ --
-DOCTYPE MBeanType commo.dtd
-PUBLIC "-//BEA Systems, Inc.//DTD Web Application 8.1//EN" weblogic810-web-jar.dtd
-PUBLIC "-//BEA Systems, Inc.//DTD WebLogic 8.1.0 Connector//EN" weblogic810-ra.dtd
-PUBLIC "-//BEA Systems, Inc.//DTD WebLogic 8.1.0 EJB//EN" weblogic-ejb-jar.dtd
