@@ -143,5 +143,9 @@
   (require 'mmm-mode)
   (mmm-mode 1))
 
+;; Add direnv integration
+(use-package direnv
+  :ensure t)
+
 (provide 'config-base)
 ;;; config-base.el ends here
