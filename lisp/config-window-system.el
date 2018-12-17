@@ -61,29 +61,33 @@
 
 (defun memes/config ()
   "Return a frame alist compatible with `initial-frame-alist`."
-  `(
-    ;; in pixels
-    (left . 0)
-    (top . 0)
-    ;; in chars
-    (width . ,memes/frame-width)
-    (height . ,memes/frame-height)))
+  (let ((config `(
+                  ;; in pixels
+                  (left . 0)
+                  (top . 0)
+                  ;; in chars
+                  (width . ,memes/frame-width)
+                  (height . ,memes/frame-height)
+                  (menu-bar-lines . nil)
+                  (tool-bar-lines . nil)
+                  (vertical-scroll-bars . t)))
+        (xfont (memes/mono-font)))
+    ;; If the preferred font is found, use-it; but if not try to force the
+    ;; first entry in preferred fonts list. Daemon mode has an initial frame
+    ;; that is not graphic, so lookup of fonts will fail.
+    (if xfont
+        (append config `((font . ,xfont)))
+      (append config `((font . ,(car memes/mono-fonts)))))))
 
-(use-package frame
-  :init
-  (when (display-graphic-p)
-    (let ((config (append (memes/config) `((menu-bar-lines . nil)
-					   (tool-bar-lines . nil)
-					   (vertical-scroll-bars . t)
-					   (font . ,(memes/mono-font))))))
-      (validate-setq default-frame-alist config
-	             initial-frame-alist config)))
-  :config
-  (progn
-    (memes/set-gui-elements)))
+;; Set initial/default configuration
+(setq initial-frame-alist (memes/config))
+(add-hook 'before-make-frame-hook (lambda ()
+                                    (let ((config (memes/config)))
+                                      (validate-setq default-frame-alist config))))
 
 (use-package mwheel
   :defer t
+  :if window-system
   :config
   (setq mouse-wheel-progressive-speed nil
 	mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil))))

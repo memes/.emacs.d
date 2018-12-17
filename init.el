@@ -123,8 +123,7 @@
 (use-config config-windows)
 
 ;; If running on a window system, load any customisations
-(use-config config-window-system
-  :if window-system)
+(use-config config-window-system)
 
 ;; Now load the modes used for coding, etc.
 
