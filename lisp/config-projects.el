@@ -28,7 +28,8 @@
     (add-to-list 'projectile-globally-ignored-files ".DS_Store")
     (add-hook 'projectile-idle-timer-hook #'projectile-invalidate-cache)
     (advice-add #'projectile-replace :before #'projectile-save-project-buffers)
-    (projectile-load-known-projects)))
+    (projectile-load-known-projects)
+    (projectile-mode +1)))
 
 (provide 'config-projects)
 ;;; config-projects.el ends here

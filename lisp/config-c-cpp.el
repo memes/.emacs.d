@@ -35,11 +35,6 @@
     (c-set-offset 'case-label '+)
     (c-toggle-auto-newline 1)))
 
-(use-package clang-format
-  :ensure t
-  :defer t
-  :commands (clang-format-region))
-
 ;; Helper functions to enable ccls and LSP in a specific mode
 
 ;;;###autoload
@@ -48,10 +43,8 @@
 ;;;###autoload
 (defun memes/ccls-enable ()
   "Enable lsp/ccls integration."
-  (setq-local lsp-ui-sideline-show-symbol nil)
-  (condition-case nil
-      (lsp-ccls-enable)
-    (user-error nil)))
+  (require 'ccls)
+  (lsp))
 
 ;; Use ccls as c/c++/obj-c server for LSP
 (use-package ccls
@@ -81,7 +74,6 @@
     (defun ccls/member ()
       (interactive)
       (lsp-ui-peek-find-custom 'member "$ccls/member")))
-  :commands (lsp-ccls-enable)
   :config
   (progn
     (validate-setq ccls-cache-dir ".ccls-cache"
@@ -94,10 +86,10 @@
                                                    :diagnostics (:frequencyMs 5000)
                                                    :index (:reparseForDependency 1)))
     (ccls-use-default-rainbow-sem-highlight)
-    (memes/completion-add-backends 'c-mode 'company-lsp)
-    (memes/completion-add-backends 'c++-mode 'company-lsp)
-    (memes/completion-add-backends 'objc-mode 'company-lsp)
     (after 'projectile
+      (validate-setq projectile-project-root-files-top-down-recurring
+                     (append '("compile_commands.json")
+                             projectile-project-root-files-top-down-recurring))
       (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")))
   :hook
   ((c-mode . memes/ccls-enable)

@@ -12,7 +12,10 @@
 (use-package dockerfile-mode
   :ensure t
   :defer t
-  :after (config-yaml))
+  :after (config-yaml)
+  :init
+  (after 'aggressive-indent
+    (add-to-list 'aggressive-indent-excluded-modes 'dockerfile-mode)))
 
 (use-package docker
   :ensure t

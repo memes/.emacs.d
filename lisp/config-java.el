@@ -14,11 +14,10 @@
   :defer t
   :commands lsp-java-enable
   :init
-  (after (config-path config-completion config-lsp)
-    (setq lsp-java-server-install-dir (memes/lib "eclipse.jdt.ls"))
-    (memes/completion-add-backends 'java-mode 'company-lsp))
+  (after 'config-path
+    (setq lsp-java-server-install-dir (memes/lib "eclipse.jdt.ls")))
   :hook
-  (java-mode . lsp-java-enable))
+  (java-mode . lsp))
 
 (use-package dap-java
   :after (config-lsp lsp-java))

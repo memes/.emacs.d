@@ -45,26 +45,15 @@
       (js2-mode . js2-refactor-mode)))
   :hook
   ((js2-mode . js2-imenu-extras-mode)
-   (js2-mode . js2-highlight-unused-variables-mode)))
+   (js2-mode . js2-highlight-unused-variables-mode)
+   (js2-mode . lsp)
+   (typescript-mode . lsp)))
 
 (use-package typescript-mode
   :ensure t
   :defer t
   :config
   (validate-setq typescript-indent-level memes/js-indent))
-
-(use-package lsp-javascript-typescript
-  :ensure t
-  :defer t
-  :commands lsp-javascript-typescript-enable
-  :init
-  (progn
-    (after (js2-mode config-completion config-lsp)
-      (memes/completion-add-backends 'js2-mode 'company-lsp))
-    (after (typescript-mode config-completion config-lsp)
-      (memes/completion-add-backends 'typescript-mode 'company-lsp)))
-  :hook
-  ((typescript-mode js2-mode) . lsp-javascript-typescript-enable))
 
 (use-package mocha
   :ensure t

@@ -73,5 +73,13 @@
                   (split-window-horizontally))
                 (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
 
+;; Popwin to help wrangle informative buffers
+(use-package popwin
+  :ensure t
+  :defer t
+  :config
+  (progn
+    (popwin-mode 1)))
+
 (provide 'config-windows)
 ;;; config-windows.el ends here

@@ -165,7 +165,7 @@ as a modifier."
 (general-define-key
  :keymaps 'global
  "M-r" 'memes/revert-buffer-noconfirm
- "C-x C-r" 'ivy-recentf)
+ "C-x C-r" 'counsel-recentf)
 
 (provide 'config-keybindings)
 ;;; config-keybindings.el ends here

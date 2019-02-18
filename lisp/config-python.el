@@ -30,9 +30,10 @@
               pdb-path
               (file-name-nondirectory buffer-file-name))))))
   :hook
-  (inferior-python-mode-hook . (lambda ()
-                                 (bind-key "C-c C-z" #'kill-buffer-and-window inferior-python-mode-map)
-                                 (process-query-on-exit-flag (get-process "Python")))))
+  ((python-mode . lsp)
+   (inferior-python-mode-hook . (lambda ()
+                                  (bind-key "C-c C-z" #'kill-buffer-and-window inferior-python-mode-map)
+                                  (process-query-on-exit-flag (get-process "Python"))))))
 
 (use-package py-yapf
   :ensure t
@@ -40,18 +41,8 @@
   :hook
   (python-mode . py-yapf-enable-on-save))
 
-(use-package lsp-python
-  :ensure t
-  :defer t
-  :commands lsp-python-enable
-  :init
-  (after (config-completion config-lsp)
-    (memes/completion-add-backends 'python-mode 'company-lsp))
-  :hook
-  (python-mode . lsp-python-enable))
-
 (use-package dap-python
-  :after (config-lsp lsp-python))
+  :after config-lsp)
 
 (provide 'config-python)
 ;;; config-python.el ends here
