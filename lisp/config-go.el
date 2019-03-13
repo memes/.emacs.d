@@ -61,14 +61,20 @@
 (use-package go-eldoc
   :ensure t
   :defer t
+  :after go-mode
   :commands go-eldoc-setup
   :hook
-  (go-mode . go-eldoc-setup))
+  (go-mode . go-eldoc-setup)
+  :config
+  (if (file-exists-p (concat (projectile-project-root) "go.mod"))
+      (validate-setq go-eldoc-gocode (expand-file-name "go/bin/gocode-gomod" memes/local-libs-root))
+    (validate-setq go-eldoc-gocode (expand-file-name "go/bin/gocode" memes/local-libs-root))))
 
 ;; Guru
 (use-package go-guru
   :ensure t
   :defer t
+  :after go-mode
   :bind
   (:map go-mode-map
         ([remap xref-find-references] . go-guru-referrers)))
@@ -109,7 +115,8 @@
 
 (use-package go-impl
   :ensure t
-  :defer t)
+  :defer t
+  :after go-mode)
 
 (use-package go-fill-struct
   :ensure t

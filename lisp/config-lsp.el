@@ -23,7 +23,8 @@
       (revert-buffer t t)
       (message "LSP server restarted."))
     (validate-setq lsp-before-save-edits t
-                   lsp-inhibit-message t)))
+                   lsp-prefer-flymake nil
+                   lsp-auto-guess-root t)))
 
 (use-package lsp-ui
   :ensure t
@@ -33,7 +34,11 @@
 (use-package company-lsp
   :ensure t
   :defer t
-  :commands company-lsp)
+  :commands company-lsp
+  :config
+  (validate-setq company-lsp-enable-snippet t
+                 company-idle-delay .2
+                 company-tooltip-limit 20))
 
 ;; Enable debugger protocol integration
 ;; - language support (Java/Python currently) must be enable in the
