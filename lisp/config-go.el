@@ -4,7 +4,7 @@
 
 ;;; Commentary:
 
-;; go get -u github.com/sourcegraph/go-langserver
+;; go get -u golang.org/x/tools/cmd/gopls
 
 ;;; Code:
 (require 'use-config)
