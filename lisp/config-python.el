@@ -44,5 +44,13 @@
 (use-package dap-python
   :after config-lsp)
 
+(use-package pipenv
+  :ensure t
+  :defer t
+  :after projectile
+  :init
+  (setq-default pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
+  :hook (python-mode . pipenv-mode))
+
 (provide 'config-python)
 ;;; config-python.el ends here

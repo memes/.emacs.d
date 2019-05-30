@@ -161,6 +161,23 @@ as a modifier."
  "s" '(magit-stage-file :which-key "stage")
  "t" '(git-timemachine :which-key "timemachine"))
 
+;; Projectile
+(general-define-key
+ :prefix "C-c"
+ :infix "p"
+ "i" '(projectile-project-info :which-key "info")
+ "f" '(projectile-find-file :which-key "find file")
+ "r" '(projectile-recentf :which-key "recent")
+ "z" '(projectile-cache-current-file :which-key "cache current file")
+ "x" '(projectile-remove-known-project :which-key "remove known project")
+ "d" '(projectile-find-dir :which-key "find directory")
+ "b" '(projectile-switch-to-buffer :which-key "switch to buffer")
+ "c" '(projectile-invalidate-cache :which-key "clear cache")
+ "X" '(projectile-cleanup-known-projects :which-key "cleanup known projects")
+ "o" '(projectile-multi-occur :which-key "multi occur")
+ "s" '(projectile-switch-project :which-key "switch project")
+ "k" '(projectile-kill-buffers :which-key "kill buffers"))
+
 ;; Global key bindings
 (general-define-key
  :keymaps 'global

@@ -9,7 +9,7 @@
 ;;; Code:
 (require 'use-config)
 
-(defvar memes/go-lsp nil
+(defvar memes/go-lsp t
   "Enable LSP backend for go-mode when non-nil.")
 
 (use-package go-mode
