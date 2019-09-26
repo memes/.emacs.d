@@ -31,12 +31,12 @@
         (expand-file-name memes/vault-pass-filename dir)))
     (defun memes/set-ansible-vault-pass ()
       "Set the locations of the vault password file."
-      (validate-setq ansible::vault-password-file (memes/ansible-locate-vault-pass-file))))
+      (validate-setq ansible-vault-password-file (memes/ansible-locate-vault-pass-file))))
   :hook
   ((yaml-mode . ansible)
    (ansible . memes/ansible-is-prog-mode)
    (ansible . memes/set-ansible-vault-pass)
-   (ansible . ansible::auto-decrypt-encrypt)))
+   (ansible . ansible-auto-decrypt-encrypt)))
 
 (use-package jinja2-mode
   :defer t
