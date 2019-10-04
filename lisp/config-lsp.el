@@ -13,13 +13,13 @@
 (use-package lsp-mode
   :ensure t
   :defer t
-  :commands lsp
+  :commands (lsp lsp-deferred)
   :config
   (progn
     (defun memes/restart-lsp-server ()
       "Restart an LSP server."
       (interactive)
-      (lsp-restart-workspace)
+      (lsp-workplace-restart)
       (revert-buffer t t)
       (message "LSP server restarted."))
     (validate-setq lsp-before-save-edits t
@@ -29,7 +29,10 @@
 (use-package lsp-ui
   :ensure t
   :defer t
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :config
+  (validate-setq lsp-ui-sideline-enable nil
+                 lsp-ui-doc-enable nil))
 
 (use-package company-lsp
   :ensure t

@@ -9,9 +9,6 @@
 ;;; Code:
 (require 'use-config)
 
-(defvar memes/go-lsp t
-  "Enable LSP backend for go-mode when non-nil.")
-
 (use-package go-mode
   :ensure t
   :defer t
@@ -24,28 +21,18 @@
     (if (not (string-match "go" compile-command))
         (set (make-local-variable 'compile-command)
              "go build -v && go test -v && go vet")))
-  (if memes/go-lsp
-      (add-hook 'go-mode-hook #'lsp))
   :config
   (validate-setq gofmt-command "goimports"
                  go-packages-function 'memes/go-pkgs)
   :hook
-  ((before-save . gofmt-before-save)
+  ((before-save . lsp-organize-imports)
+   (go-mode . lsp-deferred)
    (go-mode . memes/go-compile))
   :bind
   (:map go-mode-map
-        ([remap xref-find-definitions] . godef-jump)
+        ([remap xref-find-definitions] . lsp-find-definition)
         ("C-c r" . go-remove-unused-imports)
         ("C-c i" . go-goto-imports)))
-
-;; If not using LSP mode
-(use-package company-go
-  :if (not memes/go-lsp)
-  :ensure t
-  :defer t
-  :init
-  (after 'config-completion
-    (memes/completion-add-backends 'go-mode 'company-go)))
 
 ;; Make go-mode aware of projectile
 (use-package go-projectile
