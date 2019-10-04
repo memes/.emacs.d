@@ -184,7 +184,10 @@
      'counsel-find-file `(("x" memes/counsel-delete-file ,(propertize "delete" 'face 'font-lock-warning-face))
 			  ("4" memes/counsel-find-file-other-window "other-window")))
     (validate-setq counsel-find-file-at-point t
-		   ivy-extra-directories nil)))
+                   ivy-extra-directories nil
+                   counsel-find-file-ignore-regexp (concat
+                                                    "\\(?:\\`[#.]\\)"
+                                                    "\\|\\(?:\\`.+?[#~]\\'\\)"))))
 
 (use-package smex
   :ensure t
