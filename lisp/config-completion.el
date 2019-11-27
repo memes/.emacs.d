@@ -84,7 +84,7 @@
      (memes/completion-enabled-modes)
      :initial-value '()))
 
-     (defun memes/completion-backend-with-yasnippet (backend)
+  (defun memes/completion-backend-with-yasnippet (backend)
     ;; Avoid double-wrapping
     (if (and (listp backend) (member 'company-yasnippet backend))
         backend
@@ -109,9 +109,9 @@
   (progn
     (bind-key "TAB" #'company-complete-common-or-cycle company-active-map)
     (validate-setq company-idle-delay nil
-		   company-minimum-prefix-length 2
-		   company-tooltip-align-annotations t
-		   company-require-match nil)))
+                   company-minimum-prefix-length 2
+                   company-tooltip-align-annotations t
+                   company-require-match nil)))
 
 (use-package company-elisp
   :defer t
