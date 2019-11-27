@@ -24,8 +24,8 @@
   :config
   (validate-setq go-packages-function 'memes/go-pkgs)
   :hook
-  ((before-save . lsp-organize-imports t t)
-   (before-save . lsp-format-buffer t t)
+  ((before-save . (lsp-organize-imports t t))
+   (before-save . (lsp-format-buffer t t))
    (go-mode . lsp-deferred)
    (go-mode . memes/go-compile))
   :bind
