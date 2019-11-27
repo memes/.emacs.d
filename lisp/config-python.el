@@ -48,9 +48,30 @@
   :ensure t
   :defer t
   :after projectile
-  :init
-  (setq-default pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
+  :init  (setq-default pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
   :hook (python-mode . pipenv-mode))
+
+(defun memes/restart-python ()
+  "Restart python in venv."
+  (pyvenv-restart-python))
+
+(use-package auto-virtualenv
+  :ensure t
+  :after projectile
+  :hook
+  ((python-mode . auto-virtualenv-set-virtualenv)
+   (projectile-after-switch-project . auto-virtualenv-set-virtualenv)
+   (pyvenv-post-activate-hooks . memes/restart-python)))
+
+(use-package py-isort
+  :defer t
+  :commands (py-isort-buffer py-isort-region))
+
+(use-package python-docstring
+  :defer t
+  :ensure t
+  :config
+  (python-docstring-install))
 
 (provide 'config-python)
 ;;; config-python.el ends here
