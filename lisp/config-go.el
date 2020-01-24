@@ -22,11 +22,10 @@
         (set (make-local-variable 'compile-command)
              "go build -v && go test -v && go vet")))
   :config
-  (validate-setq go-packages-function 'memes/go-pkgs)
+  (validate-setq gofmt-command "goimports"
+                 go-packages-function 'memes/go-pkgs)
   :hook
-  ((before-save . (lsp-organize-imports t t))
-   (before-save . (lsp-format-buffer t t))
-   (go-mode . lsp-deferred)
+  ((go-mode . lsp-deferred)
    (go-mode . memes/go-compile))
   :bind
   (:map go-mode-map
